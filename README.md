@@ -9,7 +9,7 @@
     - along with building, it produces(pushes/sends) build logs using Kafka
     - pushes /dist folder contents to S3 (with unique slug)
 - once user makes call to api server with github URL
-  - he/she's auto connected to websocket server 
+  - he/she's auto connected to websocket server
   - it starts consuming(listening) to the messages produced(sent) by kafka in build step and are shown to the user.
 - once build completes, user can visit to the URL 
   - the URL is a sub-domain of the proxy server (GET /).

@@ -21,7 +21,7 @@ proxy.on('proxyReq', (proxyReq, req, res) => {
         proxyReq.path += "index.html";
     }
     return proxyReq;
-})
+});
 
 app.listen(3000, () => {
     console.log("Reverse Proxy running on port 3000!");
