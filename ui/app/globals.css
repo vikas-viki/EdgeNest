@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@font-face {
+    font-family: "Rocoleta";
+    src: url("/fonts/Recoleta.otf")
+}
+
+@font-face {
+    font-family: "Avenir";
+    src: url("/fonts/Avenir.otf")
+}
+
+.rocoleta {
+  font-family: "Rocoleta"!important;
+}
+
+.avenir {
+  font-family: "Avenir"!important;
+}
+
+body{
+  background-color: #F7F6F6;
+}
