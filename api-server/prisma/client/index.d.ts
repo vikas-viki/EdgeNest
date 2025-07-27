@@ -2239,6 +2239,7 @@ export namespace Prisma {
   export type ProjectMinAggregateOutputType = {
     id: string | null
     userId: string | null
+    name: string | null
     gitUrl: string | null
     repoBranch: string | null
     subDomain: string | null
@@ -2250,6 +2251,7 @@ export namespace Prisma {
   export type ProjectMaxAggregateOutputType = {
     id: string | null
     userId: string | null
+    name: string | null
     gitUrl: string | null
     repoBranch: string | null
     subDomain: string | null
@@ -2261,6 +2263,7 @@ export namespace Prisma {
   export type ProjectCountAggregateOutputType = {
     id: number
     userId: number
+    name: number
     gitUrl: number
     repoBranch: number
     subDomain: number
@@ -2274,6 +2277,7 @@ export namespace Prisma {
   export type ProjectMinAggregateInputType = {
     id?: true
     userId?: true
+    name?: true
     gitUrl?: true
     repoBranch?: true
     subDomain?: true
@@ -2285,6 +2289,7 @@ export namespace Prisma {
   export type ProjectMaxAggregateInputType = {
     id?: true
     userId?: true
+    name?: true
     gitUrl?: true
     repoBranch?: true
     subDomain?: true
@@ -2296,6 +2301,7 @@ export namespace Prisma {
   export type ProjectCountAggregateInputType = {
     id?: true
     userId?: true
+    name?: true
     gitUrl?: true
     repoBranch?: true
     subDomain?: true
@@ -2380,6 +2386,7 @@ export namespace Prisma {
   export type ProjectGroupByOutputType = {
     id: string
     userId: string
+    name: string
     gitUrl: string
     repoBranch: string
     subDomain: string
@@ -2408,6 +2415,7 @@ export namespace Prisma {
   export type projectSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
+    name?: boolean
     gitUrl?: boolean
     repoBranch?: boolean
     subDomain?: boolean
@@ -2422,6 +2430,7 @@ export namespace Prisma {
   export type projectSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
+    name?: boolean
     gitUrl?: boolean
     repoBranch?: boolean
     subDomain?: boolean
@@ -2434,6 +2443,7 @@ export namespace Prisma {
   export type projectSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
+    name?: boolean
     gitUrl?: boolean
     repoBranch?: boolean
     subDomain?: boolean
@@ -2446,6 +2456,7 @@ export namespace Prisma {
   export type projectSelectScalar = {
     id?: boolean
     userId?: boolean
+    name?: boolean
     gitUrl?: boolean
     repoBranch?: boolean
     subDomain?: boolean
@@ -2454,7 +2465,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type projectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "gitUrl" | "repoBranch" | "subDomain" | "customDomain" | "createdAt" | "updatedAt", ExtArgs["result"]["project"]>
+  export type projectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "gitUrl" | "repoBranch" | "subDomain" | "customDomain" | "createdAt" | "updatedAt", ExtArgs["result"]["project"]>
   export type projectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | userDefaultArgs<ExtArgs>
     deployments?: boolean | project$deploymentsArgs<ExtArgs>
@@ -2476,6 +2487,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       userId: string
+      name: string
       gitUrl: string
       repoBranch: string
       subDomain: string
@@ -2909,6 +2921,7 @@ export namespace Prisma {
   interface projectFieldRefs {
     readonly id: FieldRef<"project", 'String'>
     readonly userId: FieldRef<"project", 'String'>
+    readonly name: FieldRef<"project", 'String'>
     readonly gitUrl: FieldRef<"project", 'String'>
     readonly repoBranch: FieldRef<"project", 'String'>
     readonly subDomain: FieldRef<"project", 'String'>
@@ -4441,6 +4454,7 @@ export namespace Prisma {
   export const ProjectScalarFieldEnum: {
     id: 'id',
     userId: 'userId',
+    name: 'name',
     gitUrl: 'gitUrl',
     repoBranch: 'repoBranch',
     subDomain: 'subDomain',
@@ -4622,6 +4636,7 @@ export namespace Prisma {
     NOT?: projectWhereInput | projectWhereInput[]
     id?: StringFilter<"project"> | string
     userId?: StringFilter<"project"> | string
+    name?: StringFilter<"project"> | string
     gitUrl?: StringFilter<"project"> | string
     repoBranch?: StringFilter<"project"> | string
     subDomain?: StringFilter<"project"> | string
@@ -4635,6 +4650,7 @@ export namespace Prisma {
   export type projectOrderByWithRelationInput = {
     id?: SortOrder
     userId?: SortOrder
+    name?: SortOrder
     gitUrl?: SortOrder
     repoBranch?: SortOrder
     subDomain?: SortOrder
@@ -4653,6 +4669,7 @@ export namespace Prisma {
     OR?: projectWhereInput[]
     NOT?: projectWhereInput | projectWhereInput[]
     userId?: StringFilter<"project"> | string
+    name?: StringFilter<"project"> | string
     gitUrl?: StringFilter<"project"> | string
     repoBranch?: StringFilter<"project"> | string
     createdAt?: DateTimeFilter<"project"> | Date | string
@@ -4664,6 +4681,7 @@ export namespace Prisma {
   export type projectOrderByWithAggregationInput = {
     id?: SortOrder
     userId?: SortOrder
+    name?: SortOrder
     gitUrl?: SortOrder
     repoBranch?: SortOrder
     subDomain?: SortOrder
@@ -4681,6 +4699,7 @@ export namespace Prisma {
     NOT?: projectScalarWhereWithAggregatesInput | projectScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"project"> | string
     userId?: StringWithAggregatesFilter<"project"> | string
+    name?: StringWithAggregatesFilter<"project"> | string
     gitUrl?: StringWithAggregatesFilter<"project"> | string
     repoBranch?: StringWithAggregatesFilter<"project"> | string
     subDomain?: StringWithAggregatesFilter<"project"> | string
@@ -4820,6 +4839,7 @@ export namespace Prisma {
 
   export type projectCreateInput = {
     id?: string
+    name: string
     gitUrl: string
     repoBranch: string
     subDomain: string
@@ -4833,6 +4853,7 @@ export namespace Prisma {
   export type projectUncheckedCreateInput = {
     id?: string
     userId: string
+    name: string
     gitUrl: string
     repoBranch: string
     subDomain: string
@@ -4844,6 +4865,7 @@ export namespace Prisma {
 
   export type projectUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     gitUrl?: StringFieldUpdateOperationsInput | string
     repoBranch?: StringFieldUpdateOperationsInput | string
     subDomain?: StringFieldUpdateOperationsInput | string
@@ -4857,6 +4879,7 @@ export namespace Prisma {
   export type projectUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     gitUrl?: StringFieldUpdateOperationsInput | string
     repoBranch?: StringFieldUpdateOperationsInput | string
     subDomain?: StringFieldUpdateOperationsInput | string
@@ -4869,6 +4892,7 @@ export namespace Prisma {
   export type projectCreateManyInput = {
     id?: string
     userId: string
+    name: string
     gitUrl: string
     repoBranch: string
     subDomain: string
@@ -4879,6 +4903,7 @@ export namespace Prisma {
 
   export type projectUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     gitUrl?: StringFieldUpdateOperationsInput | string
     repoBranch?: StringFieldUpdateOperationsInput | string
     subDomain?: StringFieldUpdateOperationsInput | string
@@ -4890,6 +4915,7 @@ export namespace Prisma {
   export type projectUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     gitUrl?: StringFieldUpdateOperationsInput | string
     repoBranch?: StringFieldUpdateOperationsInput | string
     subDomain?: StringFieldUpdateOperationsInput | string
@@ -5093,6 +5119,7 @@ export namespace Prisma {
   export type projectCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+    name?: SortOrder
     gitUrl?: SortOrder
     repoBranch?: SortOrder
     subDomain?: SortOrder
@@ -5104,6 +5131,7 @@ export namespace Prisma {
   export type projectMaxOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+    name?: SortOrder
     gitUrl?: SortOrder
     repoBranch?: SortOrder
     subDomain?: SortOrder
@@ -5115,6 +5143,7 @@ export namespace Prisma {
   export type projectMinOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+    name?: SortOrder
     gitUrl?: SortOrder
     repoBranch?: SortOrder
     subDomain?: SortOrder
@@ -5439,6 +5468,7 @@ export namespace Prisma {
 
   export type projectCreateWithoutUserInput = {
     id?: string
+    name: string
     gitUrl: string
     repoBranch: string
     subDomain: string
@@ -5450,6 +5480,7 @@ export namespace Prisma {
 
   export type projectUncheckedCreateWithoutUserInput = {
     id?: string
+    name: string
     gitUrl: string
     repoBranch: string
     subDomain: string
@@ -5491,6 +5522,7 @@ export namespace Prisma {
     NOT?: projectScalarWhereInput | projectScalarWhereInput[]
     id?: StringFilter<"project"> | string
     userId?: StringFilter<"project"> | string
+    name?: StringFilter<"project"> | string
     gitUrl?: StringFilter<"project"> | string
     repoBranch?: StringFilter<"project"> | string
     subDomain?: StringFilter<"project"> | string
@@ -5608,6 +5640,7 @@ export namespace Prisma {
 
   export type projectCreateWithoutDeploymentsInput = {
     id?: string
+    name: string
     gitUrl: string
     repoBranch: string
     subDomain: string
@@ -5620,6 +5653,7 @@ export namespace Prisma {
   export type projectUncheckedCreateWithoutDeploymentsInput = {
     id?: string
     userId: string
+    name: string
     gitUrl: string
     repoBranch: string
     subDomain: string
@@ -5646,6 +5680,7 @@ export namespace Prisma {
 
   export type projectUpdateWithoutDeploymentsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     gitUrl?: StringFieldUpdateOperationsInput | string
     repoBranch?: StringFieldUpdateOperationsInput | string
     subDomain?: StringFieldUpdateOperationsInput | string
@@ -5658,6 +5693,7 @@ export namespace Prisma {
   export type projectUncheckedUpdateWithoutDeploymentsInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     gitUrl?: StringFieldUpdateOperationsInput | string
     repoBranch?: StringFieldUpdateOperationsInput | string
     subDomain?: StringFieldUpdateOperationsInput | string
@@ -5668,6 +5704,7 @@ export namespace Prisma {
 
   export type projectCreateManyUserInput = {
     id?: string
+    name: string
     gitUrl: string
     repoBranch: string
     subDomain: string
@@ -5678,6 +5715,7 @@ export namespace Prisma {
 
   export type projectUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     gitUrl?: StringFieldUpdateOperationsInput | string
     repoBranch?: StringFieldUpdateOperationsInput | string
     subDomain?: StringFieldUpdateOperationsInput | string
@@ -5689,6 +5727,7 @@ export namespace Prisma {
 
   export type projectUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     gitUrl?: StringFieldUpdateOperationsInput | string
     repoBranch?: StringFieldUpdateOperationsInput | string
     subDomain?: StringFieldUpdateOperationsInput | string
@@ -5700,6 +5739,7 @@ export namespace Prisma {
 
   export type projectUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     gitUrl?: StringFieldUpdateOperationsInput | string
     repoBranch?: StringFieldUpdateOperationsInput | string
     subDomain?: StringFieldUpdateOperationsInput | string

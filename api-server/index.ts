@@ -10,6 +10,7 @@ import { KafkaMessage } from "kafkajs";
 import { authRouter } from "./auth/route";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import { userRouter } from "./user/route";
 dotenv.config();
 
 const kafkaConsumer = kafkaClient.consumer({ groupId: 'edgenest-logs-consumers' });
@@ -35,6 +36,7 @@ io.on("connection", (socket: Socket) => {
     })
 });
 
+app.use("/user", userRouter);
 app.use("/auth", authRouter);
 app.post("/project", async (req: Request, res: Response) => {
     const { gitURL } = req.body;

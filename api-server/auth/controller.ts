@@ -27,7 +27,7 @@ export const auth = async (req: Request, res: Response) => {
             sameSite: 'lax',
             path: '/',
             maxAge: 7 * 23 * 60 * 60 * 1000
-        }).status(200).json({ message: "Authentication successful!", userId: data.data.userId });
+        }).status(200).json({ message: "Authentication successful!" });
     } catch (e) {
         const data = { message: "Error authenticating request!" };
         console.log(e);

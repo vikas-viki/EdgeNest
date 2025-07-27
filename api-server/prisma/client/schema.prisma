@@ -22,6 +22,7 @@ model user {
 model project {
   id           String       @id @default(uuid())
   userId       String
+  name         String
   user         user         @relation(fields: [userId], references: [id])
   gitUrl       String
   repoBranch   String

@@ -133,6 +133,7 @@ exports.Prisma.UserScalarFieldEnum = {
 exports.Prisma.ProjectScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  name: 'name',
   gitUrl: 'gitUrl',
   repoBranch: 'repoBranch',
   subDomain: 'subDomain',

@@ -8,9 +8,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user { // all data form github
+model user {
   id             String    @id @default(uuid())
-  userName       String 
+  userName       String
   email          String
   avatar         String?
   type           String? // "User" or "Organization"
@@ -22,8 +22,10 @@ model user { // all data form github
 model project {
   id           String       @id @default(uuid())
   userId       String
+  name         String
   user         user         @relation(fields: [userId], references: [id])
   gitUrl       String
+  env          String?
   repoBranch   String
   subDomain    String       @unique
   customDomain String?      @unique

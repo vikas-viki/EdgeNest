@@ -4,7 +4,6 @@ import { createStore } from "zustand";
 import { api } from "../lib/constants";
 
 export type AuthStore = {
-    userId?: string,
     authenticated: boolean,
     loading: boolean,
     isLoggedIn: () => Promise<void>;
@@ -12,20 +11,17 @@ export type AuthStore = {
 }
 
 export const authStore = createStore<AuthStore>()((set, get) => ({
-    userId: undefined,
     loading: false,
+    userData: null,
     authenticated: false,
     authenticateUser: async (code, installation_id) => {
         set({ loading: true });
         try {
-            const response = await api.post(`/auth`, {
+            await api.post(`/auth`, {
                 code: code,
                 installation_id: installation_id ?? null
             });
-
-            const { userId } = response.data;
             toast.success("Authentication successful!");
-            set({ userId, authenticated: true });
         } catch (e) {
             if (isAxiosError(e)) {
                 if (e.response?.data.message == "App Not Installed!") {
