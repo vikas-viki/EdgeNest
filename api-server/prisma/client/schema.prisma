@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id             String    @id @default(uuid())
+  userName       String
+  email          String
+  avatar         String?
+  type           String? // "User" or "Organization"
+  installationId String? // GitHub App installation ID (if installed)
+  subId          String
+  project        project[]
+}
+
+model project {
+  id           String       @id @default(uuid())
+  userId       String
+  user         user         @relation(fields: [userId], references: [id])
+  gitUrl       String
+  repoBranch   String
+  subDomain    String       @unique
+  customDomain String?      @unique
+  deployments  deployment[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+enum DeploymentStatus {
+  QUEUED
+  IN_PROGRESS
+  READY
+}
+
+model deployment {
+  id        String           @id @default(uuid())
+  projectId String
+  project   project          @relation(fields: [projectId], references: [id])
+  status    DeploymentStatus
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+}
+
+//clickhouse db for logs

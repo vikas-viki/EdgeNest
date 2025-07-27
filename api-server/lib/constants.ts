@@ -1,0 +1,1 @@
+export const GITHUB_APP_SLUG = "edgenestx";

@@ -7,6 +7,9 @@ import { RunTaskCommand } from "@aws-sdk/client-ecs";
 import { ecsClient, io, kafkaClient } from "./clients";
 import dotenv from "dotenv";
 import { KafkaMessage } from "kafkajs";
+import { authRouter } from "./auth/route";
+import cors from "cors";
+import cookieParser from "cookie-parser";
 dotenv.config();
 
 const kafkaConsumer = kafkaClient.consumer({ groupId: 'edgenest-logs-consumers' });
@@ -18,8 +21,13 @@ const config = {
 }
 
 const app = express();
-app.use(express.json());
+app.use(cors({
+    origin: "http://localhost:3000",
+    credentials: true
+}));
 
+app.use(express.json());
+app.use(cookieParser())
 io.on("connection", (socket: Socket) => {
     socket.on('subscribe', (channel: string) => {
         socket.join(channel);
@@ -27,6 +35,7 @@ io.on("connection", (socket: Socket) => {
     })
 });
 
+app.use("/auth", authRouter);
 app.post("/project", async (req: Request, res: Response) => {
     const { gitURL } = req.body;
     const projectSlug = generateSlug();
