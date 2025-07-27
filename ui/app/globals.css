@@ -19,7 +19,9 @@
 }
 
 body {
-  background-color: #fcf5ef;
+  /* background-color: #fcf5ef; */
+  background-color: black;
+  color: white;
 }
 
 .checkbox-wrapper {

@@ -13,3 +13,12 @@ export type UserData = {
     username: string,
     projects: UserProject[]
 }
+
+export type NewProjectData = {
+    projectName: string,
+    githubUrl: string,
+    github_branch: string,
+    sub_domain: string,
+    env_file: string,
+    output_folder: string,
+}

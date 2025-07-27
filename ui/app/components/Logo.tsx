@@ -1,10 +1,14 @@
+"use client"
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useStore } from 'zustand';
+import { authStore } from '../stores/auth';
 
 const Logo = () => {
+    const { authenticated } = useStore(authStore);
     return (
-        <Link href="/" className="font-black text-xl rocoleta flex justify-center gap-1">
+        <Link href={authenticated ? "/dashboard" : "/"} className="font-black text-xl rocoleta flex justify-center gap-1">
             <Image unoptimized src={"/icon.png"} width={20} height={10} alt=">" />
             <span className='block pt-[2px]'>EDGE NEST</span>
         </Link>
