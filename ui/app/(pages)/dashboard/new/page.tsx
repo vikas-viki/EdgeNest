@@ -4,13 +4,14 @@ import { SITE_URL } from '@/app/lib/constants'
 import { NewProjectData } from '@/app/lib/types';
 import { userStore } from '@/app/stores/user'
 import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react'
 import { useStore } from 'zustand';
 
 const NewProject = () => {
-    const { newProject, loading, subDomainExists, subdomainValid} = useStore(userStore);
+    const { newProject, loading, subDomainExists, subdomainValid } = useStore(userStore);
     const [subDomain, setSubDomain] = useState("");
-
+    const router = useRouter();
     const timer = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
@@ -25,19 +26,27 @@ const NewProject = () => {
         }
     }, [subDomain]);
 
+    const isValidSubdomain = (domain: string) => {
+        return domain.length == 0 || /^[a-zA-Z0-9-]+$/.test(domain);
+    }
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (loading) return;
         const formData = new FormData(e.target as HTMLFormElement);
 
         const data: NewProjectData = {
-            projectName: formData.get("project_name")?.toString() || "",
-            githubUrl: formData.get("github_url")?.toString() || "",
-            github_branch: formData.get("github_branch")?.toString() || "",
-            sub_domain: formData.get("sub_domain")?.toString() || "",
-            env_file: formData.get("env_file")?.toString() || "",
-            output_folder: formData.get("output_folder")?.toString() || ""
+            name: formData.get("project_name")?.toString() || "",
+            gitUrl: formData.get("github_url")?.toString() || "",
+            repoBranch: formData.get("github_branch")?.toString() || "",
+            subDomain: formData.get("sub_domain")?.toString() || "",
+            env: formData.get("env_file")?.toString() || "",
+            outputFolder: formData.get("output_folder")?.toString() || ""
         };
 
         await newProject(data);
+
+        router.push("/dashboard");
     }
 
     return (
@@ -62,9 +71,13 @@ const NewProject = () => {
                     <div className='flex flex-col relative'>
                         <label htmlFor="sub_domain" className='font-medium text-base'>Sub Domain*</label>
                         {loading && <Loader2 className='absolute animate-spin top-8 left-5' />}
-                        <input disabled={loading} required type="text" value={subDomain} onChange={(e) => setSubDomain(e.target.value)} name="sub_domain" id="sub_domain"
-                            className={`border-1 rounded-lg py-2 text-base px-3 outline-none ${subdomainValid ? "border-green-500": "border-red-300"} ${loading && "opacity-50"}`} placeholder='edgenext' />
-                        <span className='text-gray-600 select-none text-sm'><strong>edgenext</strong>{SITE_URL} will be the site url.</span>
+                        <input disabled={loading} required type="text" value={subDomain} onChange={(e) => {
+                            if (isValidSubdomain(e.target.value)) {
+                                setSubDomain(e.target.value)
+                            }
+                        }} name="sub_domain" id="sub_domain"
+                            className={`border-1 rounded-lg py-2 text-base px-3 outline-none ${subdomainValid ? "border-green-500" : "border-red-300"} ${loading && "opacity-50"}`} placeholder='edgenext' />
+                        <span className='text-gray-600 select-none text-sm'><strong>{subDomain}</strong>{SITE_URL} will be the site url.</span>
                     </div>
                     <div className='flex flex-col'>
                         <label htmlFor="env_file" className='font-medium text-base'>Environment variables <span className='text-gray-600 text-sm'>(optional)</span></label>
@@ -80,7 +93,9 @@ const NewProject = () => {
                         <span className={`custom-checkbox`}></span>
                         <label htmlFor={"auto_deployments"} className={`cursor-pointer pt-[3px] `}>Auto Deployments</label>
                     </div> */}
-                    <button type='submit' className='font-semibold text-white bg-black rounded-lg border-1 border-black hover:bg-orange-100 transition-all duration-300 px-4 py-3 cursor-pointer hover:text-black outline-none'>Deploy</button>
+                    <button type='submit' className='font-semibold flex justify-center items-center text-white bg-black rounded-lg border-1 border-black hover:bg-orange-100 transition-all duration-300 px-4 py-3 cursor-pointer hover:text-black outline-none'>
+                        {loading ? <Loader2 className='animate-spin' /> : "Deploy"}
+                    </button>
                 </form>
             </div>
         </div>

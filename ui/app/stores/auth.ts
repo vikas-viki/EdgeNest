@@ -45,6 +45,10 @@ export const authStore = createStore<AuthStore>()((set, get) => ({
             set({ authenticated: true })
         } catch (e) {
             if (isAxiosError(e)) {
+                toast.error("Please signin using Github to continue!");
+                if (!window.location.href.includes("/auth") && window.location.href.includes("/dashboard")) {
+                    window.location.href = "/auth"
+                }
                 console.log(e.response?.data);
             } else {
                 console.log(e);

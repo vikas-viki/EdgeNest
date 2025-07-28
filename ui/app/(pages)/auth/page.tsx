@@ -29,7 +29,7 @@ const Auth = ({ searchParams }: { searchParams: Promise<{ code?: string, install
             if (!res.success && !res.installed) {
                 setText("Connect EdgeNext to Github");
             }else {
-                    router.push("/user");
+                    router.push("/dashboard");
             }
         }
     }
