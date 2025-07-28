@@ -1,10 +1,10 @@
-import { PrismaClient } from "../prisma/client";
+import { PrismaClient } from "../prisma-client";
+import { createClient } from '@clickhouse/client'
 
-const globalForPrisma = global as unknown as { prisma: PrismaClient };
+export const db = new PrismaClient()
 
-const createPrismaClient = () => {
-    globalForPrisma.prisma = new PrismaClient();
-    return globalForPrisma.prisma;
-}
-
-export const db = globalForPrisma.prisma ?? createPrismaClient();
+export const clickhouseClient = createClient({
+    url: process.env.CLICKHOUSE_URL,
+    username: 'default',
+    password: process.env.CLICKHOUSE_PASSWORD,
+});

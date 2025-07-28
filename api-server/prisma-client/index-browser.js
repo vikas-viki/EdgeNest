@@ -135,9 +135,12 @@ exports.Prisma.ProjectScalarFieldEnum = {
   userId: 'userId',
   name: 'name',
   gitUrl: 'gitUrl',
+  env: 'env',
   repoBranch: 'repoBranch',
   subDomain: 'subDomain',
   customDomain: 'customDomain',
+  outputFolder: 'outputFolder',
+  status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -145,9 +148,9 @@ exports.Prisma.ProjectScalarFieldEnum = {
 exports.Prisma.DeploymentScalarFieldEnum = {
   id: 'id',
   projectId: 'projectId',
-  status: 'status',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  latest: 'latest'
 };
 
 exports.Prisma.SortOrder = {

@@ -2,5 +2,5 @@
   "watch": ["./"],
   "ext": "js,json,ts",
   "ignore": ["node_modules", "dist"],
-  "exec": "npm run build && npm run copy:prisma && node dist/index.js"
+  "exec": "npm run build && node dist/index.js"
 }

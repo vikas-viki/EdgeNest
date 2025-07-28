@@ -2241,9 +2241,12 @@ export namespace Prisma {
     userId: string | null
     name: string | null
     gitUrl: string | null
+    env: string | null
     repoBranch: string | null
     subDomain: string | null
     customDomain: string | null
+    outputFolder: string | null
+    status: $Enums.DeploymentStatus | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2253,9 +2256,12 @@ export namespace Prisma {
     userId: string | null
     name: string | null
     gitUrl: string | null
+    env: string | null
     repoBranch: string | null
     subDomain: string | null
     customDomain: string | null
+    outputFolder: string | null
+    status: $Enums.DeploymentStatus | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2265,9 +2271,12 @@ export namespace Prisma {
     userId: number
     name: number
     gitUrl: number
+    env: number
     repoBranch: number
     subDomain: number
     customDomain: number
+    outputFolder: number
+    status: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -2279,9 +2288,12 @@ export namespace Prisma {
     userId?: true
     name?: true
     gitUrl?: true
+    env?: true
     repoBranch?: true
     subDomain?: true
     customDomain?: true
+    outputFolder?: true
+    status?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -2291,9 +2303,12 @@ export namespace Prisma {
     userId?: true
     name?: true
     gitUrl?: true
+    env?: true
     repoBranch?: true
     subDomain?: true
     customDomain?: true
+    outputFolder?: true
+    status?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -2303,9 +2318,12 @@ export namespace Prisma {
     userId?: true
     name?: true
     gitUrl?: true
+    env?: true
     repoBranch?: true
     subDomain?: true
     customDomain?: true
+    outputFolder?: true
+    status?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -2388,9 +2406,12 @@ export namespace Prisma {
     userId: string
     name: string
     gitUrl: string
+    env: string | null
     repoBranch: string
     subDomain: string
     customDomain: string | null
+    outputFolder: string
+    status: $Enums.DeploymentStatus
     createdAt: Date
     updatedAt: Date
     _count: ProjectCountAggregateOutputType | null
@@ -2417,9 +2438,12 @@ export namespace Prisma {
     userId?: boolean
     name?: boolean
     gitUrl?: boolean
+    env?: boolean
     repoBranch?: boolean
     subDomain?: boolean
     customDomain?: boolean
+    outputFolder?: boolean
+    status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | userDefaultArgs<ExtArgs>
@@ -2432,9 +2456,12 @@ export namespace Prisma {
     userId?: boolean
     name?: boolean
     gitUrl?: boolean
+    env?: boolean
     repoBranch?: boolean
     subDomain?: boolean
     customDomain?: boolean
+    outputFolder?: boolean
+    status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | userDefaultArgs<ExtArgs>
@@ -2445,9 +2472,12 @@ export namespace Prisma {
     userId?: boolean
     name?: boolean
     gitUrl?: boolean
+    env?: boolean
     repoBranch?: boolean
     subDomain?: boolean
     customDomain?: boolean
+    outputFolder?: boolean
+    status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | userDefaultArgs<ExtArgs>
@@ -2458,14 +2488,17 @@ export namespace Prisma {
     userId?: boolean
     name?: boolean
     gitUrl?: boolean
+    env?: boolean
     repoBranch?: boolean
     subDomain?: boolean
     customDomain?: boolean
+    outputFolder?: boolean
+    status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type projectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "gitUrl" | "repoBranch" | "subDomain" | "customDomain" | "createdAt" | "updatedAt", ExtArgs["result"]["project"]>
+  export type projectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "gitUrl" | "env" | "repoBranch" | "subDomain" | "customDomain" | "outputFolder" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["project"]>
   export type projectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | userDefaultArgs<ExtArgs>
     deployments?: boolean | project$deploymentsArgs<ExtArgs>
@@ -2489,9 +2522,12 @@ export namespace Prisma {
       userId: string
       name: string
       gitUrl: string
+      env: string | null
       repoBranch: string
       subDomain: string
       customDomain: string | null
+      outputFolder: string
+      status: $Enums.DeploymentStatus
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["project"]>
@@ -2923,9 +2959,12 @@ export namespace Prisma {
     readonly userId: FieldRef<"project", 'String'>
     readonly name: FieldRef<"project", 'String'>
     readonly gitUrl: FieldRef<"project", 'String'>
+    readonly env: FieldRef<"project", 'String'>
     readonly repoBranch: FieldRef<"project", 'String'>
     readonly subDomain: FieldRef<"project", 'String'>
     readonly customDomain: FieldRef<"project", 'String'>
+    readonly outputFolder: FieldRef<"project", 'String'>
+    readonly status: FieldRef<"project", 'DeploymentStatus'>
     readonly createdAt: FieldRef<"project", 'DateTime'>
     readonly updatedAt: FieldRef<"project", 'DateTime'>
   }
@@ -3379,25 +3418,25 @@ export namespace Prisma {
   export type DeploymentMinAggregateOutputType = {
     id: string | null
     projectId: string | null
-    status: $Enums.DeploymentStatus | null
     createdAt: Date | null
     updatedAt: Date | null
+    latest: boolean | null
   }
 
   export type DeploymentMaxAggregateOutputType = {
     id: string | null
     projectId: string | null
-    status: $Enums.DeploymentStatus | null
     createdAt: Date | null
     updatedAt: Date | null
+    latest: boolean | null
   }
 
   export type DeploymentCountAggregateOutputType = {
     id: number
     projectId: number
-    status: number
     createdAt: number
     updatedAt: number
+    latest: number
     _all: number
   }
 
@@ -3405,25 +3444,25 @@ export namespace Prisma {
   export type DeploymentMinAggregateInputType = {
     id?: true
     projectId?: true
-    status?: true
     createdAt?: true
     updatedAt?: true
+    latest?: true
   }
 
   export type DeploymentMaxAggregateInputType = {
     id?: true
     projectId?: true
-    status?: true
     createdAt?: true
     updatedAt?: true
+    latest?: true
   }
 
   export type DeploymentCountAggregateInputType = {
     id?: true
     projectId?: true
-    status?: true
     createdAt?: true
     updatedAt?: true
+    latest?: true
     _all?: true
   }
 
@@ -3502,9 +3541,9 @@ export namespace Prisma {
   export type DeploymentGroupByOutputType = {
     id: string
     projectId: string
-    status: $Enums.DeploymentStatus
     createdAt: Date
     updatedAt: Date
+    latest: boolean
     _count: DeploymentCountAggregateOutputType | null
     _min: DeploymentMinAggregateOutputType | null
     _max: DeploymentMaxAggregateOutputType | null
@@ -3527,39 +3566,39 @@ export namespace Prisma {
   export type deploymentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     projectId?: boolean
-    status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    latest?: boolean
     project?: boolean | projectDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["deployment"]>
 
   export type deploymentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     projectId?: boolean
-    status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    latest?: boolean
     project?: boolean | projectDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["deployment"]>
 
   export type deploymentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     projectId?: boolean
-    status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    latest?: boolean
     project?: boolean | projectDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["deployment"]>
 
   export type deploymentSelectScalar = {
     id?: boolean
     projectId?: boolean
-    status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    latest?: boolean
   }
 
-  export type deploymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "projectId" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["deployment"]>
+  export type deploymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "projectId" | "createdAt" | "updatedAt" | "latest", ExtArgs["result"]["deployment"]>
   export type deploymentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     project?: boolean | projectDefaultArgs<ExtArgs>
   }
@@ -3578,9 +3617,9 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       projectId: string
-      status: $Enums.DeploymentStatus
       createdAt: Date
       updatedAt: Date
+      latest: boolean
     }, ExtArgs["result"]["deployment"]>
     composites: {}
   }
@@ -4007,9 +4046,9 @@ export namespace Prisma {
   interface deploymentFieldRefs {
     readonly id: FieldRef<"deployment", 'String'>
     readonly projectId: FieldRef<"deployment", 'String'>
-    readonly status: FieldRef<"deployment", 'DeploymentStatus'>
     readonly createdAt: FieldRef<"deployment", 'DateTime'>
     readonly updatedAt: FieldRef<"deployment", 'DateTime'>
+    readonly latest: FieldRef<"deployment", 'Boolean'>
   }
     
 
@@ -4456,9 +4495,12 @@ export namespace Prisma {
     userId: 'userId',
     name: 'name',
     gitUrl: 'gitUrl',
+    env: 'env',
     repoBranch: 'repoBranch',
     subDomain: 'subDomain',
     customDomain: 'customDomain',
+    outputFolder: 'outputFolder',
+    status: 'status',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -4469,9 +4511,9 @@ export namespace Prisma {
   export const DeploymentScalarFieldEnum: {
     id: 'id',
     projectId: 'projectId',
-    status: 'status',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    latest: 'latest'
   };
 
   export type DeploymentScalarFieldEnum = (typeof DeploymentScalarFieldEnum)[keyof typeof DeploymentScalarFieldEnum]
@@ -4521,6 +4563,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'DeploymentStatus'
+   */
+  export type EnumDeploymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DeploymentStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'DeploymentStatus[]'
+   */
+  export type ListEnumDeploymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DeploymentStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -4535,16 +4591,9 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'DeploymentStatus'
+   * Reference to a field of type 'Boolean'
    */
-  export type EnumDeploymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DeploymentStatus'>
-    
-
-
-  /**
-   * Reference to a field of type 'DeploymentStatus[]'
-   */
-  export type ListEnumDeploymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DeploymentStatus[]'>
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -4638,9 +4687,12 @@ export namespace Prisma {
     userId?: StringFilter<"project"> | string
     name?: StringFilter<"project"> | string
     gitUrl?: StringFilter<"project"> | string
+    env?: StringNullableFilter<"project"> | string | null
     repoBranch?: StringFilter<"project"> | string
     subDomain?: StringFilter<"project"> | string
     customDomain?: StringNullableFilter<"project"> | string | null
+    outputFolder?: StringFilter<"project"> | string
+    status?: EnumDeploymentStatusFilter<"project"> | $Enums.DeploymentStatus
     createdAt?: DateTimeFilter<"project"> | Date | string
     updatedAt?: DateTimeFilter<"project"> | Date | string
     user?: XOR<UserScalarRelationFilter, userWhereInput>
@@ -4652,9 +4704,12 @@ export namespace Prisma {
     userId?: SortOrder
     name?: SortOrder
     gitUrl?: SortOrder
+    env?: SortOrderInput | SortOrder
     repoBranch?: SortOrder
     subDomain?: SortOrder
     customDomain?: SortOrderInput | SortOrder
+    outputFolder?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: userOrderByWithRelationInput
@@ -4671,7 +4726,10 @@ export namespace Prisma {
     userId?: StringFilter<"project"> | string
     name?: StringFilter<"project"> | string
     gitUrl?: StringFilter<"project"> | string
+    env?: StringNullableFilter<"project"> | string | null
     repoBranch?: StringFilter<"project"> | string
+    outputFolder?: StringFilter<"project"> | string
+    status?: EnumDeploymentStatusFilter<"project"> | $Enums.DeploymentStatus
     createdAt?: DateTimeFilter<"project"> | Date | string
     updatedAt?: DateTimeFilter<"project"> | Date | string
     user?: XOR<UserScalarRelationFilter, userWhereInput>
@@ -4683,9 +4741,12 @@ export namespace Prisma {
     userId?: SortOrder
     name?: SortOrder
     gitUrl?: SortOrder
+    env?: SortOrderInput | SortOrder
     repoBranch?: SortOrder
     subDomain?: SortOrder
     customDomain?: SortOrderInput | SortOrder
+    outputFolder?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: projectCountOrderByAggregateInput
@@ -4701,9 +4762,12 @@ export namespace Prisma {
     userId?: StringWithAggregatesFilter<"project"> | string
     name?: StringWithAggregatesFilter<"project"> | string
     gitUrl?: StringWithAggregatesFilter<"project"> | string
+    env?: StringNullableWithAggregatesFilter<"project"> | string | null
     repoBranch?: StringWithAggregatesFilter<"project"> | string
     subDomain?: StringWithAggregatesFilter<"project"> | string
     customDomain?: StringNullableWithAggregatesFilter<"project"> | string | null
+    outputFolder?: StringWithAggregatesFilter<"project"> | string
+    status?: EnumDeploymentStatusWithAggregatesFilter<"project"> | $Enums.DeploymentStatus
     createdAt?: DateTimeWithAggregatesFilter<"project"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"project"> | Date | string
   }
@@ -4714,18 +4778,18 @@ export namespace Prisma {
     NOT?: deploymentWhereInput | deploymentWhereInput[]
     id?: StringFilter<"deployment"> | string
     projectId?: StringFilter<"deployment"> | string
-    status?: EnumDeploymentStatusFilter<"deployment"> | $Enums.DeploymentStatus
     createdAt?: DateTimeFilter<"deployment"> | Date | string
     updatedAt?: DateTimeFilter<"deployment"> | Date | string
+    latest?: BoolFilter<"deployment"> | boolean
     project?: XOR<ProjectScalarRelationFilter, projectWhereInput>
   }
 
   export type deploymentOrderByWithRelationInput = {
     id?: SortOrder
     projectId?: SortOrder
-    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    latest?: SortOrder
     project?: projectOrderByWithRelationInput
   }
 
@@ -4735,18 +4799,18 @@ export namespace Prisma {
     OR?: deploymentWhereInput[]
     NOT?: deploymentWhereInput | deploymentWhereInput[]
     projectId?: StringFilter<"deployment"> | string
-    status?: EnumDeploymentStatusFilter<"deployment"> | $Enums.DeploymentStatus
     createdAt?: DateTimeFilter<"deployment"> | Date | string
     updatedAt?: DateTimeFilter<"deployment"> | Date | string
+    latest?: BoolFilter<"deployment"> | boolean
     project?: XOR<ProjectScalarRelationFilter, projectWhereInput>
   }, "id">
 
   export type deploymentOrderByWithAggregationInput = {
     id?: SortOrder
     projectId?: SortOrder
-    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    latest?: SortOrder
     _count?: deploymentCountOrderByAggregateInput
     _max?: deploymentMaxOrderByAggregateInput
     _min?: deploymentMinOrderByAggregateInput
@@ -4758,9 +4822,9 @@ export namespace Prisma {
     NOT?: deploymentScalarWhereWithAggregatesInput | deploymentScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"deployment"> | string
     projectId?: StringWithAggregatesFilter<"deployment"> | string
-    status?: EnumDeploymentStatusWithAggregatesFilter<"deployment"> | $Enums.DeploymentStatus
     createdAt?: DateTimeWithAggregatesFilter<"deployment"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"deployment"> | Date | string
+    latest?: BoolWithAggregatesFilter<"deployment"> | boolean
   }
 
   export type userCreateInput = {
@@ -4841,9 +4905,12 @@ export namespace Prisma {
     id?: string
     name: string
     gitUrl: string
+    env?: string | null
     repoBranch: string
     subDomain: string
     customDomain?: string | null
+    outputFolder: string
+    status: $Enums.DeploymentStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     user: userCreateNestedOneWithoutProjectInput
@@ -4855,9 +4922,12 @@ export namespace Prisma {
     userId: string
     name: string
     gitUrl: string
+    env?: string | null
     repoBranch: string
     subDomain: string
     customDomain?: string | null
+    outputFolder: string
+    status: $Enums.DeploymentStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deployments?: deploymentUncheckedCreateNestedManyWithoutProjectInput
@@ -4867,9 +4937,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     gitUrl?: StringFieldUpdateOperationsInput | string
+    env?: NullableStringFieldUpdateOperationsInput | string | null
     repoBranch?: StringFieldUpdateOperationsInput | string
     subDomain?: StringFieldUpdateOperationsInput | string
     customDomain?: NullableStringFieldUpdateOperationsInput | string | null
+    outputFolder?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeploymentStatusFieldUpdateOperationsInput | $Enums.DeploymentStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: userUpdateOneRequiredWithoutProjectNestedInput
@@ -4881,9 +4954,12 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     gitUrl?: StringFieldUpdateOperationsInput | string
+    env?: NullableStringFieldUpdateOperationsInput | string | null
     repoBranch?: StringFieldUpdateOperationsInput | string
     subDomain?: StringFieldUpdateOperationsInput | string
     customDomain?: NullableStringFieldUpdateOperationsInput | string | null
+    outputFolder?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeploymentStatusFieldUpdateOperationsInput | $Enums.DeploymentStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deployments?: deploymentUncheckedUpdateManyWithoutProjectNestedInput
@@ -4894,9 +4970,12 @@ export namespace Prisma {
     userId: string
     name: string
     gitUrl: string
+    env?: string | null
     repoBranch: string
     subDomain: string
     customDomain?: string | null
+    outputFolder: string
+    status: $Enums.DeploymentStatus
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -4905,9 +4984,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     gitUrl?: StringFieldUpdateOperationsInput | string
+    env?: NullableStringFieldUpdateOperationsInput | string | null
     repoBranch?: StringFieldUpdateOperationsInput | string
     subDomain?: StringFieldUpdateOperationsInput | string
     customDomain?: NullableStringFieldUpdateOperationsInput | string | null
+    outputFolder?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeploymentStatusFieldUpdateOperationsInput | $Enums.DeploymentStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -4917,66 +4999,69 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     gitUrl?: StringFieldUpdateOperationsInput | string
+    env?: NullableStringFieldUpdateOperationsInput | string | null
     repoBranch?: StringFieldUpdateOperationsInput | string
     subDomain?: StringFieldUpdateOperationsInput | string
     customDomain?: NullableStringFieldUpdateOperationsInput | string | null
+    outputFolder?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeploymentStatusFieldUpdateOperationsInput | $Enums.DeploymentStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type deploymentCreateInput = {
     id?: string
-    status: $Enums.DeploymentStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    latest?: boolean
     project: projectCreateNestedOneWithoutDeploymentsInput
   }
 
   export type deploymentUncheckedCreateInput = {
     id?: string
     projectId: string
-    status: $Enums.DeploymentStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    latest?: boolean
   }
 
   export type deploymentUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    status?: EnumDeploymentStatusFieldUpdateOperationsInput | $Enums.DeploymentStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    latest?: BoolFieldUpdateOperationsInput | boolean
     project?: projectUpdateOneRequiredWithoutDeploymentsNestedInput
   }
 
   export type deploymentUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     projectId?: StringFieldUpdateOperationsInput | string
-    status?: EnumDeploymentStatusFieldUpdateOperationsInput | $Enums.DeploymentStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    latest?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type deploymentCreateManyInput = {
     id?: string
     projectId: string
-    status: $Enums.DeploymentStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    latest?: boolean
   }
 
   export type deploymentUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    status?: EnumDeploymentStatusFieldUpdateOperationsInput | $Enums.DeploymentStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    latest?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type deploymentUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     projectId?: StringFieldUpdateOperationsInput | string
-    status?: EnumDeploymentStatusFieldUpdateOperationsInput | $Enums.DeploymentStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    latest?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -5090,6 +5175,13 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
+  export type EnumDeploymentStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeploymentStatus | EnumDeploymentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DeploymentStatus[] | ListEnumDeploymentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeploymentStatus[] | ListEnumDeploymentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeploymentStatusFilter<$PrismaModel> | $Enums.DeploymentStatus
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -5121,9 +5213,12 @@ export namespace Prisma {
     userId?: SortOrder
     name?: SortOrder
     gitUrl?: SortOrder
+    env?: SortOrder
     repoBranch?: SortOrder
     subDomain?: SortOrder
     customDomain?: SortOrder
+    outputFolder?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -5133,9 +5228,12 @@ export namespace Prisma {
     userId?: SortOrder
     name?: SortOrder
     gitUrl?: SortOrder
+    env?: SortOrder
     repoBranch?: SortOrder
     subDomain?: SortOrder
     customDomain?: SortOrder
+    outputFolder?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -5145,11 +5243,24 @@ export namespace Prisma {
     userId?: SortOrder
     name?: SortOrder
     gitUrl?: SortOrder
+    env?: SortOrder
     repoBranch?: SortOrder
     subDomain?: SortOrder
     customDomain?: SortOrder
+    outputFolder?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type EnumDeploymentStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeploymentStatus | EnumDeploymentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DeploymentStatus[] | ListEnumDeploymentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeploymentStatus[] | ListEnumDeploymentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeploymentStatusWithAggregatesFilter<$PrismaModel> | $Enums.DeploymentStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDeploymentStatusFilter<$PrismaModel>
+    _max?: NestedEnumDeploymentStatusFilter<$PrismaModel>
   }
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -5166,11 +5277,9 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type EnumDeploymentStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.DeploymentStatus | EnumDeploymentStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.DeploymentStatus[] | ListEnumDeploymentStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.DeploymentStatus[] | ListEnumDeploymentStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumDeploymentStatusFilter<$PrismaModel> | $Enums.DeploymentStatus
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type ProjectScalarRelationFilter = {
@@ -5181,35 +5290,33 @@ export namespace Prisma {
   export type deploymentCountOrderByAggregateInput = {
     id?: SortOrder
     projectId?: SortOrder
-    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    latest?: SortOrder
   }
 
   export type deploymentMaxOrderByAggregateInput = {
     id?: SortOrder
     projectId?: SortOrder
-    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    latest?: SortOrder
   }
 
   export type deploymentMinOrderByAggregateInput = {
     id?: SortOrder
     projectId?: SortOrder
-    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    latest?: SortOrder
   }
 
-  export type EnumDeploymentStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.DeploymentStatus | EnumDeploymentStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.DeploymentStatus[] | ListEnumDeploymentStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.DeploymentStatus[] | ListEnumDeploymentStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumDeploymentStatusWithAggregatesFilter<$PrismaModel> | $Enums.DeploymentStatus
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumDeploymentStatusFilter<$PrismaModel>
-    _max?: NestedEnumDeploymentStatusFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type projectCreateNestedManyWithoutUserInput = {
@@ -5282,6 +5389,10 @@ export namespace Prisma {
     connect?: deploymentWhereUniqueInput | deploymentWhereUniqueInput[]
   }
 
+  export type EnumDeploymentStatusFieldUpdateOperationsInput = {
+    set?: $Enums.DeploymentStatus
+  }
+
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
   }
@@ -5328,8 +5439,8 @@ export namespace Prisma {
     connect?: projectWhereUniqueInput
   }
 
-  export type EnumDeploymentStatusFieldUpdateOperationsInput = {
-    set?: $Enums.DeploymentStatus
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type projectUpdateOneRequiredWithoutDeploymentsNestedInput = {
@@ -5424,6 +5535,13 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedEnumDeploymentStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeploymentStatus | EnumDeploymentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DeploymentStatus[] | ListEnumDeploymentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeploymentStatus[] | ListEnumDeploymentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeploymentStatusFilter<$PrismaModel> | $Enums.DeploymentStatus
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -5433,6 +5551,16 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type NestedEnumDeploymentStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeploymentStatus | EnumDeploymentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DeploymentStatus[] | ListEnumDeploymentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeploymentStatus[] | ListEnumDeploymentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeploymentStatusWithAggregatesFilter<$PrismaModel> | $Enums.DeploymentStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDeploymentStatusFilter<$PrismaModel>
+    _max?: NestedEnumDeploymentStatusFilter<$PrismaModel>
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -5449,30 +5577,29 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type NestedEnumDeploymentStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.DeploymentStatus | EnumDeploymentStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.DeploymentStatus[] | ListEnumDeploymentStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.DeploymentStatus[] | ListEnumDeploymentStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumDeploymentStatusFilter<$PrismaModel> | $Enums.DeploymentStatus
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
-  export type NestedEnumDeploymentStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.DeploymentStatus | EnumDeploymentStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.DeploymentStatus[] | ListEnumDeploymentStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.DeploymentStatus[] | ListEnumDeploymentStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumDeploymentStatusWithAggregatesFilter<$PrismaModel> | $Enums.DeploymentStatus
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumDeploymentStatusFilter<$PrismaModel>
-    _max?: NestedEnumDeploymentStatusFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type projectCreateWithoutUserInput = {
     id?: string
     name: string
     gitUrl: string
+    env?: string | null
     repoBranch: string
     subDomain: string
     customDomain?: string | null
+    outputFolder: string
+    status: $Enums.DeploymentStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deployments?: deploymentCreateNestedManyWithoutProjectInput
@@ -5482,9 +5609,12 @@ export namespace Prisma {
     id?: string
     name: string
     gitUrl: string
+    env?: string | null
     repoBranch: string
     subDomain: string
     customDomain?: string | null
+    outputFolder: string
+    status: $Enums.DeploymentStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deployments?: deploymentUncheckedCreateNestedManyWithoutProjectInput
@@ -5524,9 +5654,12 @@ export namespace Prisma {
     userId?: StringFilter<"project"> | string
     name?: StringFilter<"project"> | string
     gitUrl?: StringFilter<"project"> | string
+    env?: StringNullableFilter<"project"> | string | null
     repoBranch?: StringFilter<"project"> | string
     subDomain?: StringFilter<"project"> | string
     customDomain?: StringNullableFilter<"project"> | string | null
+    outputFolder?: StringFilter<"project"> | string
+    status?: EnumDeploymentStatusFilter<"project"> | $Enums.DeploymentStatus
     createdAt?: DateTimeFilter<"project"> | Date | string
     updatedAt?: DateTimeFilter<"project"> | Date | string
   }
@@ -5558,16 +5691,16 @@ export namespace Prisma {
 
   export type deploymentCreateWithoutProjectInput = {
     id?: string
-    status: $Enums.DeploymentStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    latest?: boolean
   }
 
   export type deploymentUncheckedCreateWithoutProjectInput = {
     id?: string
-    status: $Enums.DeploymentStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    latest?: boolean
   }
 
   export type deploymentCreateOrConnectWithoutProjectInput = {
@@ -5633,18 +5766,21 @@ export namespace Prisma {
     NOT?: deploymentScalarWhereInput | deploymentScalarWhereInput[]
     id?: StringFilter<"deployment"> | string
     projectId?: StringFilter<"deployment"> | string
-    status?: EnumDeploymentStatusFilter<"deployment"> | $Enums.DeploymentStatus
     createdAt?: DateTimeFilter<"deployment"> | Date | string
     updatedAt?: DateTimeFilter<"deployment"> | Date | string
+    latest?: BoolFilter<"deployment"> | boolean
   }
 
   export type projectCreateWithoutDeploymentsInput = {
     id?: string
     name: string
     gitUrl: string
+    env?: string | null
     repoBranch: string
     subDomain: string
     customDomain?: string | null
+    outputFolder: string
+    status: $Enums.DeploymentStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     user: userCreateNestedOneWithoutProjectInput
@@ -5655,9 +5791,12 @@ export namespace Prisma {
     userId: string
     name: string
     gitUrl: string
+    env?: string | null
     repoBranch: string
     subDomain: string
     customDomain?: string | null
+    outputFolder: string
+    status: $Enums.DeploymentStatus
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -5682,9 +5821,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     gitUrl?: StringFieldUpdateOperationsInput | string
+    env?: NullableStringFieldUpdateOperationsInput | string | null
     repoBranch?: StringFieldUpdateOperationsInput | string
     subDomain?: StringFieldUpdateOperationsInput | string
     customDomain?: NullableStringFieldUpdateOperationsInput | string | null
+    outputFolder?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeploymentStatusFieldUpdateOperationsInput | $Enums.DeploymentStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: userUpdateOneRequiredWithoutProjectNestedInput
@@ -5695,9 +5837,12 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     gitUrl?: StringFieldUpdateOperationsInput | string
+    env?: NullableStringFieldUpdateOperationsInput | string | null
     repoBranch?: StringFieldUpdateOperationsInput | string
     subDomain?: StringFieldUpdateOperationsInput | string
     customDomain?: NullableStringFieldUpdateOperationsInput | string | null
+    outputFolder?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeploymentStatusFieldUpdateOperationsInput | $Enums.DeploymentStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -5706,9 +5851,12 @@ export namespace Prisma {
     id?: string
     name: string
     gitUrl: string
+    env?: string | null
     repoBranch: string
     subDomain: string
     customDomain?: string | null
+    outputFolder: string
+    status: $Enums.DeploymentStatus
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -5717,9 +5865,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     gitUrl?: StringFieldUpdateOperationsInput | string
+    env?: NullableStringFieldUpdateOperationsInput | string | null
     repoBranch?: StringFieldUpdateOperationsInput | string
     subDomain?: StringFieldUpdateOperationsInput | string
     customDomain?: NullableStringFieldUpdateOperationsInput | string | null
+    outputFolder?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeploymentStatusFieldUpdateOperationsInput | $Enums.DeploymentStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deployments?: deploymentUpdateManyWithoutProjectNestedInput
@@ -5729,9 +5880,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     gitUrl?: StringFieldUpdateOperationsInput | string
+    env?: NullableStringFieldUpdateOperationsInput | string | null
     repoBranch?: StringFieldUpdateOperationsInput | string
     subDomain?: StringFieldUpdateOperationsInput | string
     customDomain?: NullableStringFieldUpdateOperationsInput | string | null
+    outputFolder?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeploymentStatusFieldUpdateOperationsInput | $Enums.DeploymentStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deployments?: deploymentUncheckedUpdateManyWithoutProjectNestedInput
@@ -5741,39 +5895,42 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     gitUrl?: StringFieldUpdateOperationsInput | string
+    env?: NullableStringFieldUpdateOperationsInput | string | null
     repoBranch?: StringFieldUpdateOperationsInput | string
     subDomain?: StringFieldUpdateOperationsInput | string
     customDomain?: NullableStringFieldUpdateOperationsInput | string | null
+    outputFolder?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeploymentStatusFieldUpdateOperationsInput | $Enums.DeploymentStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type deploymentCreateManyProjectInput = {
     id?: string
-    status: $Enums.DeploymentStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    latest?: boolean
   }
 
   export type deploymentUpdateWithoutProjectInput = {
     id?: StringFieldUpdateOperationsInput | string
-    status?: EnumDeploymentStatusFieldUpdateOperationsInput | $Enums.DeploymentStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    latest?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type deploymentUncheckedUpdateWithoutProjectInput = {
     id?: StringFieldUpdateOperationsInput | string
-    status?: EnumDeploymentStatusFieldUpdateOperationsInput | $Enums.DeploymentStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    latest?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type deploymentUncheckedUpdateManyWithoutProjectInput = {
     id?: StringFieldUpdateOperationsInput | string
-    status?: EnumDeploymentStatusFieldUpdateOperationsInput | $Enums.DeploymentStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    latest?: BoolFieldUpdateOperationsInput | boolean
   }
 
 

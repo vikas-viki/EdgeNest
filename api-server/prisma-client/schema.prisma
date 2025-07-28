@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "./client"
+  output   = "../prisma-client"
 }
 
 datasource db {
@@ -20,17 +20,20 @@ model user {
 }
 
 model project {
-  id           String       @id @default(uuid())
+  id           String           @id @default(uuid())
   userId       String
   name         String
-  user         user         @relation(fields: [userId], references: [id])
+  user         user             @relation(fields: [userId], references: [id])
   gitUrl       String
+  env          String?
   repoBranch   String
-  subDomain    String       @unique
-  customDomain String?      @unique
+  subDomain    String           @unique
+  customDomain String?          @unique
   deployments  deployment[]
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  outputFolder String
+  status       DeploymentStatus
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
 }
 
 enum DeploymentStatus {
@@ -40,12 +43,12 @@ enum DeploymentStatus {
 }
 
 model deployment {
-  id        String           @id @default(uuid())
+  id        String   @id @default(uuid())
   projectId String
-  project   project          @relation(fields: [projectId], references: [id])
-  status    DeploymentStatus
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
+  project   project  @relation(fields: [projectId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  latest    Boolean  @default(true)
 }
 
-//clickhouse db for logs
+//clickhouse db for logs deploymentID

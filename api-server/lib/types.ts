@@ -1,4 +1,4 @@
-import { user } from "../prisma/client"
+import { DeploymentStatus, user } from "../prisma-client"
 
 export type ServiceResponse = {
     status: number,
@@ -19,7 +19,11 @@ export type UserProject = {
     subDomain: string
     customDomain?: string | null
     createdAt: Date
-    updatedAt: Date
+    updatedAt: Date,
+    id: string
+    env: string | null,
+    outputFolder: string,
+    deploymentStatus: DeploymentStatus
 }
 
 export type UserDataResponse = {
