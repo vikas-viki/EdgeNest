@@ -12,6 +12,12 @@ declare module "express" {
     }
 }
 
+declare module "socket.io" {
+    interface Socket {
+        user: user;
+    }
+}
+
 export type UserProject = {
     name: string,
     gitUrl: string

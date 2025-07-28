@@ -69,7 +69,7 @@ export const deployAgain = async (req: Request, res: Response) => {
             return res.status(400).json({ message: "Project not found!" });
         }
 
-        data.env.trim().split("\n").forEach(e => {  
+        data.env.trim().split("\n").forEach(e => {
             const s = e.split("=", 2);
             if (s[0] != "" && s[1]) {
                 envs.push({
@@ -80,6 +80,7 @@ export const deployAgain = async (req: Request, res: Response) => {
         });
 
         await UserService.newDeployment(data, envs, req.user.id);
+        res.status(200).json({ message: "Deployment started!" });
     } catch (e) {
         console.log(e);
         res.status(500).json({ message: "Error deploying project!" });

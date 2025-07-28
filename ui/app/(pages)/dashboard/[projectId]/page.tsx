@@ -73,7 +73,7 @@ const ProjectDeployment = ({ params }: { params: Promise<{ projectId: string }> 
                         {
                             deployments[project.projectId] && (
                                 deployments[project.projectId].map((d, i) => (
-                                    <Deployment deploymentId={d.id} time={d.time} key={i} />
+                                    <Deployment deploymentId={d.id} time={d.time} key={i} projectId={project.projectId} />
                                 ))
                             )
                         }

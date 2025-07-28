@@ -2,6 +2,7 @@ import { isAxiosError } from "axios";
 import toast from "react-hot-toast";
 import { createStore } from "zustand";
 import { api } from "../lib/constants";
+import { userStore } from "./user";
 
 export type AuthStore = {
     authenticated: boolean,
@@ -41,8 +42,10 @@ export const authStore = createStore<AuthStore>()((set, get) => ({
     isLoggedIn: async () => {
         set({ loading: true });
         try {
+            const { connectToWs } = userStore.getState();
             await api.get(`/auth/session`);
-            set({ authenticated: true })
+            set({ authenticated: true });
+            connectToWs();
         } catch (e) {
             if (isAxiosError(e)) {
                 toast.error("Please signin using Github to continue!");

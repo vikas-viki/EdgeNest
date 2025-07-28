@@ -5,15 +5,17 @@ import { ChevronRight, Loader2 } from 'lucide-react'
 import { useStore } from 'zustand';
 import { userStore } from '../stores/user';
 
-const Deployment = ({ deploymentId, time }: { deploymentId: string, time: Date }) => {
-    const { getLogs, deploymentLogs } = useStore(userStore);
+const Deployment = ({ deploymentId, time, projectId }: { deploymentId: string, time: Date, projectId: string }) => {
+    const { getLogs, deploymentLogs, deployments } = useStore(userStore);
     const [open, setOpen] = useState(false);
 
     const [loading, setLoading] = useState(false);
     const handleGetLogs = async () => {
         setLoading(true);
         setOpen(prev => !prev);
-        await getLogs(deploymentId);
+        if (!open) {
+            await getLogs(deploymentId, projectId);
+        }
         setLoading(false);
     }
 
@@ -35,7 +37,7 @@ const Deployment = ({ deploymentId, time }: { deploymentId: string, time: Date }
                 style={{
                     fontFamily: "sans-serif"
                 }}
-            onClick={(e) => e.stopPropagation()} className={` ${open ? "flex": "hidden"} overflow-y-scroll max-h-[50vh] h-full w-full  flex mt-2 flex-col gap-1 bg-gray-500 p-1 rounded-sm text-white cursor-auto`}>
+                onClick={(e) => e.stopPropagation()} className={`${open ? "flex" : "hidden"} overflow-y-scroll max-h-[50vh] h-full w-full  flex mt-2 flex-col gap-1 bg-gray-500 p-1 rounded-sm text-white cursor-auto`}>
                 {
                     loading ?
                         <span className='top-5 absolute'><Loader2 className='animate-spin ' /></span>
@@ -47,7 +49,12 @@ const Deployment = ({ deploymentId, time }: { deploymentId: string, time: Date }
                                         {d.log}
                                     </span>
                                 </div>
-                            )) : <span>No Logs found!</span>
+                            )) :
+                                (
+                                    deployments[projectId].filter(d => d.id == deploymentId)[0] ?
+                                        <span>waiting for build logs</span> :
+                                        <span>No Logs found!</span>
+                                )
                         )
                 }
             </div>

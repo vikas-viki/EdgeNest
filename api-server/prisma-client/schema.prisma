@@ -49,6 +49,7 @@ model deployment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   latest    Boolean  @default(true)
+  live      Boolean  @default(true) // whether deployment logs needs to be sent over ws
 }
 
 //clickhouse db for logs deploymentID

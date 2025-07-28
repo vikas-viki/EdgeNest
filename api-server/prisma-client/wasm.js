@@ -150,7 +150,8 @@ exports.Prisma.DeploymentScalarFieldEnum = {
   projectId: 'projectId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  latest: 'latest'
+  latest: 'latest',
+  live: 'live'
 };
 
 exports.Prisma.SortOrder = {

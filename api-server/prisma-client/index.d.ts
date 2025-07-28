@@ -3421,6 +3421,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     latest: boolean | null
+    live: boolean | null
   }
 
   export type DeploymentMaxAggregateOutputType = {
@@ -3429,6 +3430,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     latest: boolean | null
+    live: boolean | null
   }
 
   export type DeploymentCountAggregateOutputType = {
@@ -3437,6 +3439,7 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     latest: number
+    live: number
     _all: number
   }
 
@@ -3447,6 +3450,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     latest?: true
+    live?: true
   }
 
   export type DeploymentMaxAggregateInputType = {
@@ -3455,6 +3459,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     latest?: true
+    live?: true
   }
 
   export type DeploymentCountAggregateInputType = {
@@ -3463,6 +3468,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     latest?: true
+    live?: true
     _all?: true
   }
 
@@ -3544,6 +3550,7 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     latest: boolean
+    live: boolean
     _count: DeploymentCountAggregateOutputType | null
     _min: DeploymentMinAggregateOutputType | null
     _max: DeploymentMaxAggregateOutputType | null
@@ -3569,6 +3576,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     latest?: boolean
+    live?: boolean
     project?: boolean | projectDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["deployment"]>
 
@@ -3578,6 +3586,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     latest?: boolean
+    live?: boolean
     project?: boolean | projectDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["deployment"]>
 
@@ -3587,6 +3596,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     latest?: boolean
+    live?: boolean
     project?: boolean | projectDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["deployment"]>
 
@@ -3596,9 +3606,10 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     latest?: boolean
+    live?: boolean
   }
 
-  export type deploymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "projectId" | "createdAt" | "updatedAt" | "latest", ExtArgs["result"]["deployment"]>
+  export type deploymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "projectId" | "createdAt" | "updatedAt" | "latest" | "live", ExtArgs["result"]["deployment"]>
   export type deploymentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     project?: boolean | projectDefaultArgs<ExtArgs>
   }
@@ -3620,6 +3631,7 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       latest: boolean
+      live: boolean
     }, ExtArgs["result"]["deployment"]>
     composites: {}
   }
@@ -4049,6 +4061,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"deployment", 'DateTime'>
     readonly updatedAt: FieldRef<"deployment", 'DateTime'>
     readonly latest: FieldRef<"deployment", 'Boolean'>
+    readonly live: FieldRef<"deployment", 'Boolean'>
   }
     
 
@@ -4513,7 +4526,8 @@ export namespace Prisma {
     projectId: 'projectId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    latest: 'latest'
+    latest: 'latest',
+    live: 'live'
   };
 
   export type DeploymentScalarFieldEnum = (typeof DeploymentScalarFieldEnum)[keyof typeof DeploymentScalarFieldEnum]
@@ -4781,6 +4795,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"deployment"> | Date | string
     updatedAt?: DateTimeFilter<"deployment"> | Date | string
     latest?: BoolFilter<"deployment"> | boolean
+    live?: BoolFilter<"deployment"> | boolean
     project?: XOR<ProjectScalarRelationFilter, projectWhereInput>
   }
 
@@ -4790,6 +4805,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     latest?: SortOrder
+    live?: SortOrder
     project?: projectOrderByWithRelationInput
   }
 
@@ -4802,6 +4818,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"deployment"> | Date | string
     updatedAt?: DateTimeFilter<"deployment"> | Date | string
     latest?: BoolFilter<"deployment"> | boolean
+    live?: BoolFilter<"deployment"> | boolean
     project?: XOR<ProjectScalarRelationFilter, projectWhereInput>
   }, "id">
 
@@ -4811,6 +4828,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     latest?: SortOrder
+    live?: SortOrder
     _count?: deploymentCountOrderByAggregateInput
     _max?: deploymentMaxOrderByAggregateInput
     _min?: deploymentMinOrderByAggregateInput
@@ -4825,6 +4843,7 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"deployment"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"deployment"> | Date | string
     latest?: BoolWithAggregatesFilter<"deployment"> | boolean
+    live?: BoolWithAggregatesFilter<"deployment"> | boolean
   }
 
   export type userCreateInput = {
@@ -5014,6 +5033,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     latest?: boolean
+    live?: boolean
     project: projectCreateNestedOneWithoutDeploymentsInput
   }
 
@@ -5023,6 +5043,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     latest?: boolean
+    live?: boolean
   }
 
   export type deploymentUpdateInput = {
@@ -5030,6 +5051,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     latest?: BoolFieldUpdateOperationsInput | boolean
+    live?: BoolFieldUpdateOperationsInput | boolean
     project?: projectUpdateOneRequiredWithoutDeploymentsNestedInput
   }
 
@@ -5039,6 +5061,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     latest?: BoolFieldUpdateOperationsInput | boolean
+    live?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type deploymentCreateManyInput = {
@@ -5047,6 +5070,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     latest?: boolean
+    live?: boolean
   }
 
   export type deploymentUpdateManyMutationInput = {
@@ -5054,6 +5078,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     latest?: BoolFieldUpdateOperationsInput | boolean
+    live?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type deploymentUncheckedUpdateManyInput = {
@@ -5062,6 +5087,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     latest?: BoolFieldUpdateOperationsInput | boolean
+    live?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -5293,6 +5319,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     latest?: SortOrder
+    live?: SortOrder
   }
 
   export type deploymentMaxOrderByAggregateInput = {
@@ -5301,6 +5328,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     latest?: SortOrder
+    live?: SortOrder
   }
 
   export type deploymentMinOrderByAggregateInput = {
@@ -5309,6 +5337,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     latest?: SortOrder
+    live?: SortOrder
   }
 
   export type BoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -5694,6 +5723,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     latest?: boolean
+    live?: boolean
   }
 
   export type deploymentUncheckedCreateWithoutProjectInput = {
@@ -5701,6 +5731,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     latest?: boolean
+    live?: boolean
   }
 
   export type deploymentCreateOrConnectWithoutProjectInput = {
@@ -5769,6 +5800,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"deployment"> | Date | string
     updatedAt?: DateTimeFilter<"deployment"> | Date | string
     latest?: BoolFilter<"deployment"> | boolean
+    live?: BoolFilter<"deployment"> | boolean
   }
 
   export type projectCreateWithoutDeploymentsInput = {
@@ -5910,6 +5942,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     latest?: boolean
+    live?: boolean
   }
 
   export type deploymentUpdateWithoutProjectInput = {
@@ -5917,6 +5950,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     latest?: BoolFieldUpdateOperationsInput | boolean
+    live?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type deploymentUncheckedUpdateWithoutProjectInput = {
@@ -5924,6 +5958,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     latest?: BoolFieldUpdateOperationsInput | boolean
+    live?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type deploymentUncheckedUpdateManyWithoutProjectInput = {
@@ -5931,6 +5966,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     latest?: BoolFieldUpdateOperationsInput | boolean
+    live?: BoolFieldUpdateOperationsInput | boolean
   }
 
 

@@ -32,6 +32,7 @@ const ProjectSettings = () => {
     }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         if (loading || !selectedProject) return;
         const formData = new FormData(e.target as HTMLFormElement);
 

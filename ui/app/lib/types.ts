@@ -14,7 +14,8 @@ export type UserProject = {
 
 export type ProjectDeployments = {
     id: string,
-    time: Date
+    time: Date, 
+    live: boolean
 }
 
 export enum DeploymentStatus {
@@ -58,7 +59,8 @@ export type NewProjectResponse = {
 
 export type DeploymentLogs = {
     log: string,
-    time: string
+    time: string,
+    key?: number
 }
 
 export type LogsResponse = {

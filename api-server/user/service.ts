@@ -1,9 +1,8 @@
 import { RunTaskCommand } from "@aws-sdk/client-ecs";
-import { ecsClient } from "../clients";
-import { clickhouseClient, db } from "../lib/clients";
 import { UserDataResponse } from "../lib/types";
 import { project, user } from "../prisma-client";
 import { NewDeploymentData, NewProjectData } from "./scheema";
+import { clickhouseClient, db, ecsClient } from "../lib/clients";
 
 export class UserService {
     static config = {
@@ -35,6 +34,10 @@ export class UserService {
                                 name: 'PROJECT_ID',
                                 value: data.projectId
                             },
+                            // {
+                            //     name: 'KAFKAJS_NO_PARTITIONER_WARNING',
+                            //     value: '1'
+                            // },
                             {
                                 name: 'GIT_REPOSITORY_URL',
                                 value: data.gitUrl
@@ -146,6 +149,20 @@ export class UserService {
                 latest: false
             }
         });
+        await db.project.update({
+            where: {
+                id: data.id
+            },  
+            data: {
+                userId,
+                name: data.name,
+                gitUrl: data.gitUrl,
+                repoBranch: data.repoBranch,
+                status: "IN_PROGRESS",
+                subDomain: data.subDomain,
+                outputFolder: data.outputFolder
+            }
+        });
         const deployment = await db.deployment.create({
             data: {
                 projectId: data.id
@@ -165,12 +182,13 @@ export class UserService {
             take: 50
         });
 
-        const data: { id: string, time: Date }[] = [];
+        const data: { id: string, time: Date, live: boolean }[] = [];
 
         deployments.forEach(d => {
             data.push({
                 id: d.id,
-                time: d.createdAt
+                time: d.createdAt,
+                live: d.live
             })
         });
 
@@ -188,14 +206,48 @@ export class UserService {
         return rows;
     }
 
-    static async deploymentComplete(projectId: string) {
+    static async deploymentComplete(deploymentId: string) {
+        const deployment = await db.deployment.update({
+            where: {
+                id: deploymentId
+            },
+            data: {
+                live: false
+            },
+            select: {
+                projectId: true
+            }
+        })
         await db.project.update({
             where: {
-                id: projectId
+                id: deployment.projectId
             },
             data: {
                 status: "READY"
             }
-        })
+        });
+    }
+
+    static async isUserDeployment(projectId: string, deploymentId: string, userId: string): Promise<boolean> {
+        const projects = await db.project.findUnique({
+            where: {
+                id: projectId,
+                userId
+            }
+        });
+
+        if (projects) {
+            const deployment = await db.deployment.findUnique({
+                where: {
+                    id: deploymentId,
+                    projectId
+                }
+            })
+
+            if (deployment) {
+                return true;
+            }
+        }
+        return false;
     }
 }
