@@ -12,6 +12,7 @@ export const NewProjectScheema = z.object({
 export type NewProjectData = z.infer<typeof NewProjectScheema>;
 
 export const NewDeploymentScheema = z.object({
+    changes: z.boolean(),
     id: z.string(),
     name: z.string(),
     gitUrl: z.string(),

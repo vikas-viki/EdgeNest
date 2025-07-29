@@ -149,20 +149,22 @@ export class UserService {
                 latest: false
             }
         });
-        await db.project.update({
-            where: {
-                id: data.id
-            },  
-            data: {
-                userId,
-                name: data.name,
-                gitUrl: data.gitUrl,
-                repoBranch: data.repoBranch,
-                status: "IN_PROGRESS",
-                subDomain: data.subDomain,
-                outputFolder: data.outputFolder
-            }
-        });
+        if (data.changes) {
+            await db.project.update({
+                where: {
+                    id: data.id
+                },
+                data: {
+                    userId,
+                    name: data.name,
+                    gitUrl: data.gitUrl,
+                    repoBranch: data.repoBranch,
+                    status: "IN_PROGRESS",
+                    subDomain: data.subDomain,
+                    outputFolder: data.outputFolder
+                }
+            });
+        }
         const deployment = await db.deployment.create({
             data: {
                 projectId: data.id
