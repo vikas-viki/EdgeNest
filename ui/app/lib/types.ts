@@ -40,6 +40,7 @@ export type NewProjectData = {
 }
 
 export type NewDeploymentData = {
+    changes: boolean
     id: string
     name: string,
     gitUrl: string,

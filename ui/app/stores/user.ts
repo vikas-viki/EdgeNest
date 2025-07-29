@@ -11,6 +11,7 @@ type UserStoreData = {
     socket: Socket | null
     userData: UserData | null,
     subdomainValid: boolean,
+    liveLogs: string[], // live deployment logs subscription
     selectedProject: UserProject | null,
     socketLogs: Record<string, { key: string, value: string }[]>;
     deployments: Record<string, ProjectDeployments[]>;
@@ -34,6 +35,7 @@ export const userStore = createStore<UserStoreData>()((set, get) => ({
     loading: false,
     deployments: {},
     deploymentLogs: {},
+    liveLogs: [],
     subdomainValid: false,
     socketLogs: {},
     setSubdomainValid: (valid) => {
@@ -113,7 +115,7 @@ export const userStore = createStore<UserStoreData>()((set, get) => ({
             const deployments = response.data.deployments as ProjectDeployments[];
             const newDeployments = state.deployments;
 
-            newDeployments[projectId] = deployments.reverse();
+            newDeployments[projectId] = deployments;
 
             set({ deployments: newDeployments });
         } catch (e) {
@@ -165,8 +167,13 @@ export const userStore = createStore<UserStoreData>()((set, get) => ({
         set({ socket: s });
     },
     joinDeploymentRoom: (deploymentId, projectId) => {
-        toast.success("Getting live logs")
-        const { socket, deploymentLogs } = get();
+        const { socket, liveLogs } = get();
+        if (liveLogs.includes(deploymentId)) {
+            return;
+        } else {
+            set({ liveLogs: [...liveLogs, deploymentId] });
+        }
+        toast.success("Getting live logs");
         if (socket) {
             if (socket.connected) {
                 socket.emit("subscribe", `${deploymentId}---${projectId}`);
@@ -176,6 +183,7 @@ export const userStore = createStore<UserStoreData>()((set, get) => ({
                 })
             }
             socket.on("message", (data: { key: string, value: string }) => {
+                const { deploymentLogs } = get();
                 if (!deploymentLogs[deploymentId]) {
                     deploymentLogs[deploymentId] = [];
                 }

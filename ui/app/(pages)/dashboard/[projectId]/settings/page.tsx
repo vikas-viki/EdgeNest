@@ -37,6 +37,7 @@ const ProjectSettings = () => {
         const formData = new FormData(e.target as HTMLFormElement);
 
         const data: NewDeploymentData = {
+            changes: false,
             id: selectedProject!.id,
             name: formData.get("project_name")?.toString() || "",
             gitUrl: formData.get("github_url")?.toString() || "",

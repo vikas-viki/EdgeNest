@@ -3,25 +3,44 @@ import Deployment from '@/app/components/Deployment';
 import Loader from '@/app/components/Loader';
 import Logo from '@/app/components/Logo';
 import { SITE_URL } from '@/app/lib/constants';
+import { NewDeploymentData } from '@/app/lib/types';
 import { authStore } from '@/app/stores/auth';
 import { userStore } from '@/app/stores/user';
 import { Settings } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { use, useEffect } from 'react'
+import toast from 'react-hot-toast';
 import { useStore } from 'zustand';
 
 const ProjectDeployment = ({ params }: { params: Promise<{ projectId: string }> }) => {
     const project = use(params);
     const router = useRouter();
     const { authenticated } = useStore(authStore);
-    const { selectedProject, getProjectDeployments, deployments, userData, setSelectedProject, getUserData } = useStore(userStore);
+    const { selectedProject, getProjectDeployments, newDeployment, deployments, userData, setSelectedProject, getUserData } = useStore(userStore);
 
     useEffect(() => {
         if (!deployments[project.projectId]) {
             getProjectDeployments(project.projectId);
         }
     }, [deployments, project.projectId]);
+
+    const deployAgain = async () => {
+        if (!selectedProject) return;
+        const data: NewDeploymentData = {
+            changes: false,
+            id: selectedProject.id,
+            name: selectedProject.name,
+            gitUrl: selectedProject.gitUrl,
+            repoBranch: selectedProject.repoBranch,
+            subDomain: selectedProject.subDomain,
+            env: selectedProject.env || "",
+            outputFolder: selectedProject.outputFolder,
+        }
+        toast.success("Deployment Started");
+        await newDeployment(data);
+        await getProjectDeployments(project.projectId);
+    }
 
     useEffect(() => {
         console.log({ selectedProject, userData });
@@ -60,7 +79,7 @@ const ProjectDeployment = ({ params }: { params: Promise<{ projectId: string }> 
                         <button
                             onClick={(e) => {
                                 e.stopPropagation();
-                                router.push(`/dashboard/${selectedProject.id}/settings`);
+                                deployAgain();
                             }}
                             className='rounded-lg font-semibold text-white bg-black flex justify-center items-center p-2 gap-1 outline-none border-black border-1 hover:bg-orange-100 hover:text-black cursor-pointer px-3 text-sm transition-all duration-200'><span>Deploy Again</span></button>
 
