@@ -1,3 +1,5 @@
+import { SITE_URL } from "./constants";
+
 export const timeAgo = (date: Date) => {
     const now = new Date();
     const diff = (now.getTime() - new Date(date).getTime()) / 1000; // in seconds
@@ -20,4 +22,8 @@ export const timeAgo = (date: Date) => {
     }
 
     return 'just now';
+}
+
+export const getLiveLink = (subdomain: string) => {
+    return `https://${subdomain}${SITE_URL}`
 }

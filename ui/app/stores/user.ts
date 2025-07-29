@@ -178,7 +178,7 @@ export const userStore = createStore<UserStoreData>()((set, get) => ({
             if (socket.connected) {
                 socket.emit("subscribe", `${deploymentId}---${projectId}`);
             } else {
-                socket.on("connection", () => {
+                socket.on("connect", () => {
                     socket.emit("subscribe", `${deploymentId}---${projectId}`);
                 })
             }

@@ -50,7 +50,7 @@ async function publishLog(log) {
         await kafkaProducer.send({
             topic: `edgenest-projectbulid-logs`,
             messages: [
-                { key: `log---${deploymentID}---${key++}`, value: log.toString() }
+                { key: `log---${deploymentID}---${key++}---${projectID.toString().toLowerCase() == deploymentID.toString().toLowerCase() ? "YES": "NO"}`, value: log.toString() }
             ]
         });
     } catch (e) {

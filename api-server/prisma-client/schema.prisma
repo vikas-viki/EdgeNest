@@ -53,3 +53,10 @@ model deployment {
 }
 
 //clickhouse db for logs deploymentID
+
+model publicDeployments {
+  id        String  @id @default(uuid())
+  subdomain String
+  gitURL    String
+  live      Boolean @default(true)
+}

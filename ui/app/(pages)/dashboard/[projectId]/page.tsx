@@ -3,6 +3,7 @@ import Deployment from '@/app/components/Deployment';
 import Loader from '@/app/components/Loader';
 import Logo from '@/app/components/Logo';
 import { SITE_URL } from '@/app/lib/constants';
+import { getLiveLink } from '@/app/lib/helpers';
 import { NewDeploymentData } from '@/app/lib/types';
 import { authStore } from '@/app/stores/auth';
 import { userStore } from '@/app/stores/user';
@@ -66,7 +67,7 @@ const ProjectDeployment = ({ params }: { params: Promise<{ projectId: string }> 
                     <span className='text-xl font-bold'>
                         {selectedProject.name}
                     </span>
-                    <span className='font-bold'>URL: <Link href={`https://${selectedProject.subDomain + SITE_URL}`} target='_blank' className='underline font-normal'>{selectedProject.subDomain}{SITE_URL}</Link></span>
+                    <span className='font-bold'>URL: <Link href={getLiveLink(selectedProject.subDomain)} target='_blank' className='underline font-normal'>{selectedProject.subDomain}{SITE_URL}</Link></span>
                     <span><span className='font-bold'>Deployments:</span> {deployments[project.projectId]?.length || 0}</span>
 
                     <div className='flex gap-4'>

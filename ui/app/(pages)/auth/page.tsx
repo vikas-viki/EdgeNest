@@ -49,7 +49,7 @@ const Auth = ({ searchParams }: { searchParams: Promise<{ code?: string, install
                     <span>✔ Select repositories to deploy directly.</span>
                     <span>✔ Automatic deployments on every change.</span>
                     <span>✔ All your projects organized in one place.</span>
-                    <span>✔ Custom metrics on your dashboard.</span>
+                    <span>✔ Customizable subdomains.</span>
                 </div>
                 {
                     loading ?

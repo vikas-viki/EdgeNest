@@ -154,6 +154,13 @@ exports.Prisma.DeploymentScalarFieldEnum = {
   live: 'live'
 };
 
+exports.Prisma.PublicDeploymentsScalarFieldEnum = {
+  id: 'id',
+  subdomain: 'subdomain',
+  gitURL: 'gitURL',
+  live: 'live'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -177,7 +184,8 @@ exports.DeploymentStatus = exports.$Enums.DeploymentStatus = {
 exports.Prisma.ModelName = {
   user: 'user',
   project: 'project',
-  deployment: 'deployment'
+  deployment: 'deployment',
+  publicDeployments: 'publicDeployments'
 };
 
 /**

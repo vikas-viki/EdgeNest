@@ -50,6 +50,15 @@ export type NewDeploymentData = {
     outputFolder: string,
 }
 
+export type TempDeploymentData = {
+    name: string,
+    gitUrl: string,
+    repoBranch: string,
+    subDomain: string,
+    env: string,
+    outputFolder: string,
+}
+
 export type NewProjectResponse = {
     status: 'in progress',
     name: string,

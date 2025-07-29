@@ -1,8 +1,9 @@
 import { RunTaskCommand } from "@aws-sdk/client-ecs";
 import { UserDataResponse } from "../lib/types";
 import { project, user } from "../prisma-client";
-import { NewDeploymentData, NewProjectData } from "./scheema";
+import { NewDeploymentData, NewProjectData, PublicDeploymentData } from "./scheema";
 import { clickhouseClient, db, ecsClient } from "../lib/clients";
+import { generateSlug } from "random-word-slugs";
 
 export class UserService {
     static config = {
@@ -82,6 +83,31 @@ export class UserService {
         });
 
         await ecsClient.send(cmd);
+    }
+
+    static async publicDeployment(data: PublicDeploymentData, envs: Record<string, string>[]): Promise<string> {
+        let taken = true;
+        let phrase = generateSlug(2);
+        while (taken) {
+            const proj = await db.project.findFirst({
+                where: {
+                    subDomain: phrase
+                }
+            });
+            if (!proj)
+                taken = false;
+            else
+                phrase = generateSlug();
+        }
+        const publicDeployment = await db.publicDeployments.create({
+            data: {
+                subdomain: phrase,
+                gitURL: data.gitUrl
+            }
+        });
+
+        await this.newTask({ projectId: publicDeployment.id, gitUrl: data.gitUrl, outputFolder: data.outputFolder, repoBranch: data.repoBranch, deploymentId: publicDeployment.id, envs });
+        return publicDeployment.id;
     }
 
     static async getUserData(user: user): Promise<UserDataResponse> {
@@ -209,25 +235,37 @@ export class UserService {
     }
 
     static async deploymentComplete(deploymentId: string) {
-        const deployment = await db.deployment.update({
-            where: {
-                id: deploymentId
-            },
-            data: {
-                live: false
-            },
-            select: {
-                projectId: true
-            }
-        })
-        await db.project.update({
-            where: {
-                id: deployment.projectId
-            },
-            data: {
-                status: "READY"
-            }
-        });
+        try {
+            await db.publicDeployments.update({
+                where: {
+                    id: deploymentId
+                },
+                data: {
+                    live: false
+                }
+            })
+        } catch { }
+        try {
+            const deployment = await db.deployment.update({
+                where: {
+                    id: deploymentId
+                },
+                data: {
+                    live: false
+                },
+                select: {
+                    projectId: true
+                }
+            })
+            await db.project.update({
+                where: {
+                    id: deployment.projectId
+                },
+                data: {
+                    status: "READY"
+                }
+            });
+        } catch { }
     }
 
     static async isUserDeployment(projectId: string, deploymentId: string, userId: string): Promise<boolean> {

@@ -4,7 +4,7 @@ import Link from 'next/link'
 import React from 'react'
 import { SITE_URL } from '../lib/constants'
 import { useRouter } from 'next/navigation'
-import { timeAgo } from '@/app/lib/helpers';
+import { getLiveLink, timeAgo } from '@/app/lib/helpers';
 import { DeploymentStatus, UserProject } from '../lib/types'
 import { useStore } from 'zustand';
 import { userStore } from '../stores/user';
@@ -25,7 +25,7 @@ const ProjectCard = ({ project }: { project: UserProject }) => {
                     onClick={(e) => {
                         e.stopPropagation();
                     }}
-                    href={`https://${project.subDomain}${SITE_URL}`} className='text-sm underline'>{project.subDomain}{SITE_URL}</Link>
+                    href={getLiveLink(project.subDomain)} className='text-sm underline'>{project.subDomain}{SITE_URL}</Link>
                 <span className='text-xs text-gray-700'>{timeAgo(project.updatedAt)}</span>
             </div>
             <div className='flex justify-between pt-3'>

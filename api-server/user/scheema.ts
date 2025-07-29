@@ -23,3 +23,12 @@ export const NewDeploymentScheema = z.object({
 });
 
 export type NewDeploymentData = z.infer<typeof NewDeploymentScheema>;
+
+export const PublicDeploymentScheema = z.object({
+    outputFolder: z.string(),
+    env: z.string(),
+    gitUrl: z.string(),
+    repoBranch: z.string()
+}).strict()
+
+export type PublicDeploymentData = z.infer<typeof PublicDeploymentScheema>;

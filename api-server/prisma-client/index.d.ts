@@ -28,6 +28,11 @@ export type project = $Result.DefaultSelection<Prisma.$projectPayload>
  * 
  */
 export type deployment = $Result.DefaultSelection<Prisma.$deploymentPayload>
+/**
+ * Model publicDeployments
+ * 
+ */
+export type publicDeployments = $Result.DefaultSelection<Prisma.$publicDeploymentsPayload>
 
 /**
  * Enums
@@ -201,6 +206,16 @@ export class PrismaClient<
     * ```
     */
   get deployment(): Prisma.deploymentDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.publicDeployments`: Exposes CRUD operations for the **publicDeployments** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PublicDeployments
+    * const publicDeployments = await prisma.publicDeployments.findMany()
+    * ```
+    */
+  get publicDeployments(): Prisma.publicDeploymentsDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -643,7 +658,8 @@ export namespace Prisma {
   export const ModelName: {
     user: 'user',
     project: 'project',
-    deployment: 'deployment'
+    deployment: 'deployment',
+    publicDeployments: 'publicDeployments'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -662,7 +678,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "project" | "deployment"
+      modelProps: "user" | "project" | "deployment" | "publicDeployments"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -888,6 +904,80 @@ export namespace Prisma {
           }
         }
       }
+      publicDeployments: {
+        payload: Prisma.$publicDeploymentsPayload<ExtArgs>
+        fields: Prisma.publicDeploymentsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.publicDeploymentsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$publicDeploymentsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.publicDeploymentsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$publicDeploymentsPayload>
+          }
+          findFirst: {
+            args: Prisma.publicDeploymentsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$publicDeploymentsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.publicDeploymentsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$publicDeploymentsPayload>
+          }
+          findMany: {
+            args: Prisma.publicDeploymentsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$publicDeploymentsPayload>[]
+          }
+          create: {
+            args: Prisma.publicDeploymentsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$publicDeploymentsPayload>
+          }
+          createMany: {
+            args: Prisma.publicDeploymentsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.publicDeploymentsCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$publicDeploymentsPayload>[]
+          }
+          delete: {
+            args: Prisma.publicDeploymentsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$publicDeploymentsPayload>
+          }
+          update: {
+            args: Prisma.publicDeploymentsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$publicDeploymentsPayload>
+          }
+          deleteMany: {
+            args: Prisma.publicDeploymentsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.publicDeploymentsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.publicDeploymentsUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$publicDeploymentsPayload>[]
+          }
+          upsert: {
+            args: Prisma.publicDeploymentsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$publicDeploymentsPayload>
+          }
+          aggregate: {
+            args: Prisma.PublicDeploymentsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePublicDeployments>
+          }
+          groupBy: {
+            args: Prisma.publicDeploymentsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PublicDeploymentsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.publicDeploymentsCountArgs<ExtArgs>
+            result: $Utils.Optional<PublicDeploymentsCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -975,6 +1065,7 @@ export namespace Prisma {
     user?: userOmit
     project?: projectOmit
     deployment?: deploymentOmit
+    publicDeployments?: publicDeploymentsOmit
   }
 
   /* Types for Logging */
@@ -4477,6 +4568,988 @@ export namespace Prisma {
 
 
   /**
+   * Model publicDeployments
+   */
+
+  export type AggregatePublicDeployments = {
+    _count: PublicDeploymentsCountAggregateOutputType | null
+    _min: PublicDeploymentsMinAggregateOutputType | null
+    _max: PublicDeploymentsMaxAggregateOutputType | null
+  }
+
+  export type PublicDeploymentsMinAggregateOutputType = {
+    id: string | null
+    subdomain: string | null
+    gitURL: string | null
+    live: boolean | null
+  }
+
+  export type PublicDeploymentsMaxAggregateOutputType = {
+    id: string | null
+    subdomain: string | null
+    gitURL: string | null
+    live: boolean | null
+  }
+
+  export type PublicDeploymentsCountAggregateOutputType = {
+    id: number
+    subdomain: number
+    gitURL: number
+    live: number
+    _all: number
+  }
+
+
+  export type PublicDeploymentsMinAggregateInputType = {
+    id?: true
+    subdomain?: true
+    gitURL?: true
+    live?: true
+  }
+
+  export type PublicDeploymentsMaxAggregateInputType = {
+    id?: true
+    subdomain?: true
+    gitURL?: true
+    live?: true
+  }
+
+  export type PublicDeploymentsCountAggregateInputType = {
+    id?: true
+    subdomain?: true
+    gitURL?: true
+    live?: true
+    _all?: true
+  }
+
+  export type PublicDeploymentsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which publicDeployments to aggregate.
+     */
+    where?: publicDeploymentsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of publicDeployments to fetch.
+     */
+    orderBy?: publicDeploymentsOrderByWithRelationInput | publicDeploymentsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: publicDeploymentsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` publicDeployments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` publicDeployments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned publicDeployments
+    **/
+    _count?: true | PublicDeploymentsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PublicDeploymentsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PublicDeploymentsMaxAggregateInputType
+  }
+
+  export type GetPublicDeploymentsAggregateType<T extends PublicDeploymentsAggregateArgs> = {
+        [P in keyof T & keyof AggregatePublicDeployments]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePublicDeployments[P]>
+      : GetScalarType<T[P], AggregatePublicDeployments[P]>
+  }
+
+
+
+
+  export type publicDeploymentsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: publicDeploymentsWhereInput
+    orderBy?: publicDeploymentsOrderByWithAggregationInput | publicDeploymentsOrderByWithAggregationInput[]
+    by: PublicDeploymentsScalarFieldEnum[] | PublicDeploymentsScalarFieldEnum
+    having?: publicDeploymentsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PublicDeploymentsCountAggregateInputType | true
+    _min?: PublicDeploymentsMinAggregateInputType
+    _max?: PublicDeploymentsMaxAggregateInputType
+  }
+
+  export type PublicDeploymentsGroupByOutputType = {
+    id: string
+    subdomain: string
+    gitURL: string
+    live: boolean
+    _count: PublicDeploymentsCountAggregateOutputType | null
+    _min: PublicDeploymentsMinAggregateOutputType | null
+    _max: PublicDeploymentsMaxAggregateOutputType | null
+  }
+
+  type GetPublicDeploymentsGroupByPayload<T extends publicDeploymentsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PublicDeploymentsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PublicDeploymentsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PublicDeploymentsGroupByOutputType[P]>
+            : GetScalarType<T[P], PublicDeploymentsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type publicDeploymentsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    subdomain?: boolean
+    gitURL?: boolean
+    live?: boolean
+  }, ExtArgs["result"]["publicDeployments"]>
+
+  export type publicDeploymentsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    subdomain?: boolean
+    gitURL?: boolean
+    live?: boolean
+  }, ExtArgs["result"]["publicDeployments"]>
+
+  export type publicDeploymentsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    subdomain?: boolean
+    gitURL?: boolean
+    live?: boolean
+  }, ExtArgs["result"]["publicDeployments"]>
+
+  export type publicDeploymentsSelectScalar = {
+    id?: boolean
+    subdomain?: boolean
+    gitURL?: boolean
+    live?: boolean
+  }
+
+  export type publicDeploymentsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "subdomain" | "gitURL" | "live", ExtArgs["result"]["publicDeployments"]>
+
+  export type $publicDeploymentsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "publicDeployments"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      subdomain: string
+      gitURL: string
+      live: boolean
+    }, ExtArgs["result"]["publicDeployments"]>
+    composites: {}
+  }
+
+  type publicDeploymentsGetPayload<S extends boolean | null | undefined | publicDeploymentsDefaultArgs> = $Result.GetResult<Prisma.$publicDeploymentsPayload, S>
+
+  type publicDeploymentsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<publicDeploymentsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PublicDeploymentsCountAggregateInputType | true
+    }
+
+  export interface publicDeploymentsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['publicDeployments'], meta: { name: 'publicDeployments' } }
+    /**
+     * Find zero or one PublicDeployments that matches the filter.
+     * @param {publicDeploymentsFindUniqueArgs} args - Arguments to find a PublicDeployments
+     * @example
+     * // Get one PublicDeployments
+     * const publicDeployments = await prisma.publicDeployments.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends publicDeploymentsFindUniqueArgs>(args: SelectSubset<T, publicDeploymentsFindUniqueArgs<ExtArgs>>): Prisma__publicDeploymentsClient<$Result.GetResult<Prisma.$publicDeploymentsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PublicDeployments that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {publicDeploymentsFindUniqueOrThrowArgs} args - Arguments to find a PublicDeployments
+     * @example
+     * // Get one PublicDeployments
+     * const publicDeployments = await prisma.publicDeployments.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends publicDeploymentsFindUniqueOrThrowArgs>(args: SelectSubset<T, publicDeploymentsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__publicDeploymentsClient<$Result.GetResult<Prisma.$publicDeploymentsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PublicDeployments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {publicDeploymentsFindFirstArgs} args - Arguments to find a PublicDeployments
+     * @example
+     * // Get one PublicDeployments
+     * const publicDeployments = await prisma.publicDeployments.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends publicDeploymentsFindFirstArgs>(args?: SelectSubset<T, publicDeploymentsFindFirstArgs<ExtArgs>>): Prisma__publicDeploymentsClient<$Result.GetResult<Prisma.$publicDeploymentsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PublicDeployments that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {publicDeploymentsFindFirstOrThrowArgs} args - Arguments to find a PublicDeployments
+     * @example
+     * // Get one PublicDeployments
+     * const publicDeployments = await prisma.publicDeployments.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends publicDeploymentsFindFirstOrThrowArgs>(args?: SelectSubset<T, publicDeploymentsFindFirstOrThrowArgs<ExtArgs>>): Prisma__publicDeploymentsClient<$Result.GetResult<Prisma.$publicDeploymentsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PublicDeployments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {publicDeploymentsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PublicDeployments
+     * const publicDeployments = await prisma.publicDeployments.findMany()
+     * 
+     * // Get first 10 PublicDeployments
+     * const publicDeployments = await prisma.publicDeployments.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const publicDeploymentsWithIdOnly = await prisma.publicDeployments.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends publicDeploymentsFindManyArgs>(args?: SelectSubset<T, publicDeploymentsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$publicDeploymentsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PublicDeployments.
+     * @param {publicDeploymentsCreateArgs} args - Arguments to create a PublicDeployments.
+     * @example
+     * // Create one PublicDeployments
+     * const PublicDeployments = await prisma.publicDeployments.create({
+     *   data: {
+     *     // ... data to create a PublicDeployments
+     *   }
+     * })
+     * 
+     */
+    create<T extends publicDeploymentsCreateArgs>(args: SelectSubset<T, publicDeploymentsCreateArgs<ExtArgs>>): Prisma__publicDeploymentsClient<$Result.GetResult<Prisma.$publicDeploymentsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PublicDeployments.
+     * @param {publicDeploymentsCreateManyArgs} args - Arguments to create many PublicDeployments.
+     * @example
+     * // Create many PublicDeployments
+     * const publicDeployments = await prisma.publicDeployments.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends publicDeploymentsCreateManyArgs>(args?: SelectSubset<T, publicDeploymentsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PublicDeployments and returns the data saved in the database.
+     * @param {publicDeploymentsCreateManyAndReturnArgs} args - Arguments to create many PublicDeployments.
+     * @example
+     * // Create many PublicDeployments
+     * const publicDeployments = await prisma.publicDeployments.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PublicDeployments and only return the `id`
+     * const publicDeploymentsWithIdOnly = await prisma.publicDeployments.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends publicDeploymentsCreateManyAndReturnArgs>(args?: SelectSubset<T, publicDeploymentsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$publicDeploymentsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PublicDeployments.
+     * @param {publicDeploymentsDeleteArgs} args - Arguments to delete one PublicDeployments.
+     * @example
+     * // Delete one PublicDeployments
+     * const PublicDeployments = await prisma.publicDeployments.delete({
+     *   where: {
+     *     // ... filter to delete one PublicDeployments
+     *   }
+     * })
+     * 
+     */
+    delete<T extends publicDeploymentsDeleteArgs>(args: SelectSubset<T, publicDeploymentsDeleteArgs<ExtArgs>>): Prisma__publicDeploymentsClient<$Result.GetResult<Prisma.$publicDeploymentsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PublicDeployments.
+     * @param {publicDeploymentsUpdateArgs} args - Arguments to update one PublicDeployments.
+     * @example
+     * // Update one PublicDeployments
+     * const publicDeployments = await prisma.publicDeployments.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends publicDeploymentsUpdateArgs>(args: SelectSubset<T, publicDeploymentsUpdateArgs<ExtArgs>>): Prisma__publicDeploymentsClient<$Result.GetResult<Prisma.$publicDeploymentsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PublicDeployments.
+     * @param {publicDeploymentsDeleteManyArgs} args - Arguments to filter PublicDeployments to delete.
+     * @example
+     * // Delete a few PublicDeployments
+     * const { count } = await prisma.publicDeployments.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends publicDeploymentsDeleteManyArgs>(args?: SelectSubset<T, publicDeploymentsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PublicDeployments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {publicDeploymentsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PublicDeployments
+     * const publicDeployments = await prisma.publicDeployments.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends publicDeploymentsUpdateManyArgs>(args: SelectSubset<T, publicDeploymentsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PublicDeployments and returns the data updated in the database.
+     * @param {publicDeploymentsUpdateManyAndReturnArgs} args - Arguments to update many PublicDeployments.
+     * @example
+     * // Update many PublicDeployments
+     * const publicDeployments = await prisma.publicDeployments.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PublicDeployments and only return the `id`
+     * const publicDeploymentsWithIdOnly = await prisma.publicDeployments.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends publicDeploymentsUpdateManyAndReturnArgs>(args: SelectSubset<T, publicDeploymentsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$publicDeploymentsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PublicDeployments.
+     * @param {publicDeploymentsUpsertArgs} args - Arguments to update or create a PublicDeployments.
+     * @example
+     * // Update or create a PublicDeployments
+     * const publicDeployments = await prisma.publicDeployments.upsert({
+     *   create: {
+     *     // ... data to create a PublicDeployments
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PublicDeployments we want to update
+     *   }
+     * })
+     */
+    upsert<T extends publicDeploymentsUpsertArgs>(args: SelectSubset<T, publicDeploymentsUpsertArgs<ExtArgs>>): Prisma__publicDeploymentsClient<$Result.GetResult<Prisma.$publicDeploymentsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PublicDeployments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {publicDeploymentsCountArgs} args - Arguments to filter PublicDeployments to count.
+     * @example
+     * // Count the number of PublicDeployments
+     * const count = await prisma.publicDeployments.count({
+     *   where: {
+     *     // ... the filter for the PublicDeployments we want to count
+     *   }
+     * })
+    **/
+    count<T extends publicDeploymentsCountArgs>(
+      args?: Subset<T, publicDeploymentsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PublicDeploymentsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PublicDeployments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PublicDeploymentsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PublicDeploymentsAggregateArgs>(args: Subset<T, PublicDeploymentsAggregateArgs>): Prisma.PrismaPromise<GetPublicDeploymentsAggregateType<T>>
+
+    /**
+     * Group by PublicDeployments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {publicDeploymentsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends publicDeploymentsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: publicDeploymentsGroupByArgs['orderBy'] }
+        : { orderBy?: publicDeploymentsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, publicDeploymentsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPublicDeploymentsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the publicDeployments model
+   */
+  readonly fields: publicDeploymentsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for publicDeployments.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__publicDeploymentsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the publicDeployments model
+   */
+  interface publicDeploymentsFieldRefs {
+    readonly id: FieldRef<"publicDeployments", 'String'>
+    readonly subdomain: FieldRef<"publicDeployments", 'String'>
+    readonly gitURL: FieldRef<"publicDeployments", 'String'>
+    readonly live: FieldRef<"publicDeployments", 'Boolean'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * publicDeployments findUnique
+   */
+  export type publicDeploymentsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the publicDeployments
+     */
+    select?: publicDeploymentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the publicDeployments
+     */
+    omit?: publicDeploymentsOmit<ExtArgs> | null
+    /**
+     * Filter, which publicDeployments to fetch.
+     */
+    where: publicDeploymentsWhereUniqueInput
+  }
+
+  /**
+   * publicDeployments findUniqueOrThrow
+   */
+  export type publicDeploymentsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the publicDeployments
+     */
+    select?: publicDeploymentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the publicDeployments
+     */
+    omit?: publicDeploymentsOmit<ExtArgs> | null
+    /**
+     * Filter, which publicDeployments to fetch.
+     */
+    where: publicDeploymentsWhereUniqueInput
+  }
+
+  /**
+   * publicDeployments findFirst
+   */
+  export type publicDeploymentsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the publicDeployments
+     */
+    select?: publicDeploymentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the publicDeployments
+     */
+    omit?: publicDeploymentsOmit<ExtArgs> | null
+    /**
+     * Filter, which publicDeployments to fetch.
+     */
+    where?: publicDeploymentsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of publicDeployments to fetch.
+     */
+    orderBy?: publicDeploymentsOrderByWithRelationInput | publicDeploymentsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for publicDeployments.
+     */
+    cursor?: publicDeploymentsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` publicDeployments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` publicDeployments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of publicDeployments.
+     */
+    distinct?: PublicDeploymentsScalarFieldEnum | PublicDeploymentsScalarFieldEnum[]
+  }
+
+  /**
+   * publicDeployments findFirstOrThrow
+   */
+  export type publicDeploymentsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the publicDeployments
+     */
+    select?: publicDeploymentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the publicDeployments
+     */
+    omit?: publicDeploymentsOmit<ExtArgs> | null
+    /**
+     * Filter, which publicDeployments to fetch.
+     */
+    where?: publicDeploymentsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of publicDeployments to fetch.
+     */
+    orderBy?: publicDeploymentsOrderByWithRelationInput | publicDeploymentsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for publicDeployments.
+     */
+    cursor?: publicDeploymentsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` publicDeployments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` publicDeployments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of publicDeployments.
+     */
+    distinct?: PublicDeploymentsScalarFieldEnum | PublicDeploymentsScalarFieldEnum[]
+  }
+
+  /**
+   * publicDeployments findMany
+   */
+  export type publicDeploymentsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the publicDeployments
+     */
+    select?: publicDeploymentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the publicDeployments
+     */
+    omit?: publicDeploymentsOmit<ExtArgs> | null
+    /**
+     * Filter, which publicDeployments to fetch.
+     */
+    where?: publicDeploymentsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of publicDeployments to fetch.
+     */
+    orderBy?: publicDeploymentsOrderByWithRelationInput | publicDeploymentsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing publicDeployments.
+     */
+    cursor?: publicDeploymentsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` publicDeployments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` publicDeployments.
+     */
+    skip?: number
+    distinct?: PublicDeploymentsScalarFieldEnum | PublicDeploymentsScalarFieldEnum[]
+  }
+
+  /**
+   * publicDeployments create
+   */
+  export type publicDeploymentsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the publicDeployments
+     */
+    select?: publicDeploymentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the publicDeployments
+     */
+    omit?: publicDeploymentsOmit<ExtArgs> | null
+    /**
+     * The data needed to create a publicDeployments.
+     */
+    data: XOR<publicDeploymentsCreateInput, publicDeploymentsUncheckedCreateInput>
+  }
+
+  /**
+   * publicDeployments createMany
+   */
+  export type publicDeploymentsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many publicDeployments.
+     */
+    data: publicDeploymentsCreateManyInput | publicDeploymentsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * publicDeployments createManyAndReturn
+   */
+  export type publicDeploymentsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the publicDeployments
+     */
+    select?: publicDeploymentsSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the publicDeployments
+     */
+    omit?: publicDeploymentsOmit<ExtArgs> | null
+    /**
+     * The data used to create many publicDeployments.
+     */
+    data: publicDeploymentsCreateManyInput | publicDeploymentsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * publicDeployments update
+   */
+  export type publicDeploymentsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the publicDeployments
+     */
+    select?: publicDeploymentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the publicDeployments
+     */
+    omit?: publicDeploymentsOmit<ExtArgs> | null
+    /**
+     * The data needed to update a publicDeployments.
+     */
+    data: XOR<publicDeploymentsUpdateInput, publicDeploymentsUncheckedUpdateInput>
+    /**
+     * Choose, which publicDeployments to update.
+     */
+    where: publicDeploymentsWhereUniqueInput
+  }
+
+  /**
+   * publicDeployments updateMany
+   */
+  export type publicDeploymentsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update publicDeployments.
+     */
+    data: XOR<publicDeploymentsUpdateManyMutationInput, publicDeploymentsUncheckedUpdateManyInput>
+    /**
+     * Filter which publicDeployments to update
+     */
+    where?: publicDeploymentsWhereInput
+    /**
+     * Limit how many publicDeployments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * publicDeployments updateManyAndReturn
+   */
+  export type publicDeploymentsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the publicDeployments
+     */
+    select?: publicDeploymentsSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the publicDeployments
+     */
+    omit?: publicDeploymentsOmit<ExtArgs> | null
+    /**
+     * The data used to update publicDeployments.
+     */
+    data: XOR<publicDeploymentsUpdateManyMutationInput, publicDeploymentsUncheckedUpdateManyInput>
+    /**
+     * Filter which publicDeployments to update
+     */
+    where?: publicDeploymentsWhereInput
+    /**
+     * Limit how many publicDeployments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * publicDeployments upsert
+   */
+  export type publicDeploymentsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the publicDeployments
+     */
+    select?: publicDeploymentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the publicDeployments
+     */
+    omit?: publicDeploymentsOmit<ExtArgs> | null
+    /**
+     * The filter to search for the publicDeployments to update in case it exists.
+     */
+    where: publicDeploymentsWhereUniqueInput
+    /**
+     * In case the publicDeployments found by the `where` argument doesn't exist, create a new publicDeployments with this data.
+     */
+    create: XOR<publicDeploymentsCreateInput, publicDeploymentsUncheckedCreateInput>
+    /**
+     * In case the publicDeployments was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<publicDeploymentsUpdateInput, publicDeploymentsUncheckedUpdateInput>
+  }
+
+  /**
+   * publicDeployments delete
+   */
+  export type publicDeploymentsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the publicDeployments
+     */
+    select?: publicDeploymentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the publicDeployments
+     */
+    omit?: publicDeploymentsOmit<ExtArgs> | null
+    /**
+     * Filter which publicDeployments to delete.
+     */
+    where: publicDeploymentsWhereUniqueInput
+  }
+
+  /**
+   * publicDeployments deleteMany
+   */
+  export type publicDeploymentsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which publicDeployments to delete
+     */
+    where?: publicDeploymentsWhereInput
+    /**
+     * Limit how many publicDeployments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * publicDeployments without action
+   */
+  export type publicDeploymentsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the publicDeployments
+     */
+    select?: publicDeploymentsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the publicDeployments
+     */
+    omit?: publicDeploymentsOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -4531,6 +5604,16 @@ export namespace Prisma {
   };
 
   export type DeploymentScalarFieldEnum = (typeof DeploymentScalarFieldEnum)[keyof typeof DeploymentScalarFieldEnum]
+
+
+  export const PublicDeploymentsScalarFieldEnum: {
+    id: 'id',
+    subdomain: 'subdomain',
+    gitURL: 'gitURL',
+    live: 'live'
+  };
+
+  export type PublicDeploymentsScalarFieldEnum = (typeof PublicDeploymentsScalarFieldEnum)[keyof typeof PublicDeploymentsScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -4846,6 +5929,53 @@ export namespace Prisma {
     live?: BoolWithAggregatesFilter<"deployment"> | boolean
   }
 
+  export type publicDeploymentsWhereInput = {
+    AND?: publicDeploymentsWhereInput | publicDeploymentsWhereInput[]
+    OR?: publicDeploymentsWhereInput[]
+    NOT?: publicDeploymentsWhereInput | publicDeploymentsWhereInput[]
+    id?: StringFilter<"publicDeployments"> | string
+    subdomain?: StringFilter<"publicDeployments"> | string
+    gitURL?: StringFilter<"publicDeployments"> | string
+    live?: BoolFilter<"publicDeployments"> | boolean
+  }
+
+  export type publicDeploymentsOrderByWithRelationInput = {
+    id?: SortOrder
+    subdomain?: SortOrder
+    gitURL?: SortOrder
+    live?: SortOrder
+  }
+
+  export type publicDeploymentsWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: publicDeploymentsWhereInput | publicDeploymentsWhereInput[]
+    OR?: publicDeploymentsWhereInput[]
+    NOT?: publicDeploymentsWhereInput | publicDeploymentsWhereInput[]
+    subdomain?: StringFilter<"publicDeployments"> | string
+    gitURL?: StringFilter<"publicDeployments"> | string
+    live?: BoolFilter<"publicDeployments"> | boolean
+  }, "id">
+
+  export type publicDeploymentsOrderByWithAggregationInput = {
+    id?: SortOrder
+    subdomain?: SortOrder
+    gitURL?: SortOrder
+    live?: SortOrder
+    _count?: publicDeploymentsCountOrderByAggregateInput
+    _max?: publicDeploymentsMaxOrderByAggregateInput
+    _min?: publicDeploymentsMinOrderByAggregateInput
+  }
+
+  export type publicDeploymentsScalarWhereWithAggregatesInput = {
+    AND?: publicDeploymentsScalarWhereWithAggregatesInput | publicDeploymentsScalarWhereWithAggregatesInput[]
+    OR?: publicDeploymentsScalarWhereWithAggregatesInput[]
+    NOT?: publicDeploymentsScalarWhereWithAggregatesInput | publicDeploymentsScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"publicDeployments"> | string
+    subdomain?: StringWithAggregatesFilter<"publicDeployments"> | string
+    gitURL?: StringWithAggregatesFilter<"publicDeployments"> | string
+    live?: BoolWithAggregatesFilter<"publicDeployments"> | boolean
+  }
+
   export type userCreateInput = {
     id?: string
     userName: string
@@ -5087,6 +6217,55 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     latest?: BoolFieldUpdateOperationsInput | boolean
+    live?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type publicDeploymentsCreateInput = {
+    id?: string
+    subdomain: string
+    gitURL: string
+    live?: boolean
+  }
+
+  export type publicDeploymentsUncheckedCreateInput = {
+    id?: string
+    subdomain: string
+    gitURL: string
+    live?: boolean
+  }
+
+  export type publicDeploymentsUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    subdomain?: StringFieldUpdateOperationsInput | string
+    gitURL?: StringFieldUpdateOperationsInput | string
+    live?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type publicDeploymentsUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    subdomain?: StringFieldUpdateOperationsInput | string
+    gitURL?: StringFieldUpdateOperationsInput | string
+    live?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type publicDeploymentsCreateManyInput = {
+    id?: string
+    subdomain: string
+    gitURL: string
+    live?: boolean
+  }
+
+  export type publicDeploymentsUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    subdomain?: StringFieldUpdateOperationsInput | string
+    gitURL?: StringFieldUpdateOperationsInput | string
+    live?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type publicDeploymentsUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    subdomain?: StringFieldUpdateOperationsInput | string
+    gitURL?: StringFieldUpdateOperationsInput | string
     live?: BoolFieldUpdateOperationsInput | boolean
   }
 
@@ -5346,6 +6525,27 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type publicDeploymentsCountOrderByAggregateInput = {
+    id?: SortOrder
+    subdomain?: SortOrder
+    gitURL?: SortOrder
+    live?: SortOrder
+  }
+
+  export type publicDeploymentsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    subdomain?: SortOrder
+    gitURL?: SortOrder
+    live?: SortOrder
+  }
+
+  export type publicDeploymentsMinOrderByAggregateInput = {
+    id?: SortOrder
+    subdomain?: SortOrder
+    gitURL?: SortOrder
+    live?: SortOrder
   }
 
   export type projectCreateNestedManyWithoutUserInput = {

@@ -1,19 +1,29 @@
 import { Router } from "express";
 import { authorizeUser } from "../middlewares";
-import { deployAgain, getData, getDeploymentLogs, getProjectDeployments, newProject, subDomainExists } from "./controller";
+import { deployAgain, getData, getDeploymentLogs, getProjectDeployments, newProject, publicDeployment, publicDeploymentLogs, subDomainExists } from "./controller";
+import rateLimit from "express-rate-limit";
 
 export const userRouter = Router();
+const limit = rateLimit({
+    windowMs: 30 * 1000,
+    max: 20,
+    standardHeaders: true,
+    legacyHeaders: true,
+    message: "Only one public deployment per 30s, please wait!"
+})
 
-userRouter.use(authorizeUser);
+userRouter.get("/", authorizeUser, getData);
 
-userRouter.get("/", getData);
+userRouter.post("/project", authorizeUser, newProject);
 
-userRouter.post("/project", newProject);
+userRouter.post("/new-deployment", authorizeUser, deployAgain);
 
-userRouter.post("/new-deployment", deployAgain);
+userRouter.post("/subdomain-exists", authorizeUser, subDomainExists);
 
-userRouter.post("/subdomain-exists", subDomainExists);
+userRouter.get("/deployments/:projectId", authorizeUser, getProjectDeployments);
 
-userRouter.get("/deployments/:projectId", getProjectDeployments)
+userRouter.get("/logs/:deploymentId", authorizeUser, getDeploymentLogs);
 
-userRouter.get("/logs/:deploymentId", getDeploymentLogs);
+userRouter.post("/public-deployment", publicDeployment);
+
+userRouter.get("/public-deployment-logs/:id", publicDeploymentLogs);

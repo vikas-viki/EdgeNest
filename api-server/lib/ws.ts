@@ -1,7 +1,7 @@
 import { Socket } from "socket.io";
 import { isSessionValid } from "../middlewares";
 import { UserService } from "../user/service";
-import { io, kafkaConsumer } from "./clients";
+import { io, kafkaConsumer, publicIO } from "./clients";
 import * as cookie from "cookie";
 import { KafkaMessage } from "kafkajs";
 
@@ -22,6 +22,17 @@ io.use(async (socket, next) => {
 
     socket.user = res.user;
     next();
+})
+publicIO.on("connection", (socket: Socket) => {
+    socket.on("subscribe", async (deploymentId: string) => {
+        socket.join(deploymentId);
+
+        if (deploymentLogsBuffer[deploymentId]) {
+            deploymentLogsBuffer[deploymentId].map(l => {
+                socket.emit("message", l);
+            });
+        }
+    })
 })
 
 io.on("connection", (socket: Socket) => {
@@ -51,11 +62,12 @@ export async function initKafkaSubscribe() {
                 const splits = message.key.toString().split("---");
                 const deploymentId = splits[1];
                 const key = splits[2]; // auto-number
+                const isPublic = splits[3];
 
                 if (message.value.toString() == "DEPLOYMENT_DONE") {
                     await UserService.deploymentComplete(deploymentId);
                 } else {
-                    console.log("log::", message.value.toString());
+                    console.log(isPublic, "log::", message.value.toString());
                     if (!deploymentLogsBuffer[deploymentId]) {
                         deploymentLogsBuffer[deploymentId] = [];
                         setTimeout(() => {
@@ -63,7 +75,11 @@ export async function initKafkaSubscribe() {
                         }, 10 * 60 * 1000); // 10 mins
                     }
                     deploymentLogsBuffer[deploymentId].push({ key, value: message.value.toString() });
-                    io.to(deploymentId).emit('message', { key, value: message.value.toString() });
+                    if (isPublic == "YES") {
+                        publicIO.to(deploymentId).emit('message', { key, value: message.value.toString() });
+                    } else {
+                        io.to(deploymentId).emit('message', { key, value: message.value.toString() });
+                    }
                 }
             }
         }

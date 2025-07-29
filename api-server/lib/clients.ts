@@ -26,6 +26,8 @@ export const kafkaConsumer = kafkaClient.consumer({ groupId: 'edgenest-logs-cons
 
 export const io = new Server({ cors: { origin: "http://localhost:3000", credentials: true } });
 
+export const publicIO = new Server({ cors: { origin: "http://localhost:3000" } });
+
 const ecsAccessKeyId = process.env.S3_ACCESS_KEY;
 const ecsSecretAccessKey = process.env.S3_SECRET_KEY;
 

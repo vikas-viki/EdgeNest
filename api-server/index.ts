@@ -1,5 +1,5 @@
 import express from "express";
-import { io } from "./lib/clients";
+import { io, publicIO } from "./lib/clients";
 import dotenv from "dotenv";
 import { authRouter } from "./auth/route";
 import cors from "cors";
@@ -10,7 +10,7 @@ import { initKafkaSubscribe } from "./lib/ws";
 dotenv.config();
 
 const limiter = rateLimit({
-    windowMs: 5 * 60 * 100,
+    windowMs: 5 * 60 * 1000,
     max: 100,
     standardHeaders: true,
     legacyHeaders: true,
@@ -32,9 +32,10 @@ app.use("/user", userRouter);
 app.use("/auth", authRouter);
 
 io.listen(9001);
-console.log("Socket server running  on port 9001");
+publicIO.listen(9002);
+console.log("Socket server running  on port 9001 & 9002");
 
 app.listen(9000, async () => {
-    await initKafkaSubscribe();
     console.log("Api server running on port 9000!");
+    await initKafkaSubscribe();
 })

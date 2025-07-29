@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { UserService } from "./service";
-import { NewDeploymentScheema, NewProjectScheema } from "./scheema";
+import { NewDeploymentScheema, NewProjectScheema, PublicDeploymentScheema } from "./scheema";
 import { db } from "../lib/clients";
 
 export const getData = async (req: Request, res: Response) => {
@@ -145,5 +145,57 @@ export const getDeploymentLogs = async (req: Request, res: Response) => {
     } catch (e) {
         console.log(e);
         res.status(500).json({ message: "Error getting deployment logs!" });
+    }
+}
+
+export const publicDeployment = async (req: Request, res: Response) => {
+    try {
+        const data = PublicDeploymentScheema.parse(req.body);
+        const envs: Record<string, string>[] = [];
+
+        data.env.trim().split("\n").forEach(e => {
+            const s = e.split("=", 2);
+            if (s[0] != "" && s[1]) {
+                envs.push({
+                    name: s[0],
+                    value: s[1]
+                })
+            }
+        });
+        const id = await UserService.publicDeployment(data, envs);
+        res.status(200).json({ id });
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({ message: "Error creating deployment" });
+    }
+}
+
+export const publicDeploymentLogs = async (req: Request, res: Response) => {
+    try {
+        const id = req.params.id;
+        if (!id) {
+            return res.status(400).json({ message: "Invalid request!" });
+        }
+
+        const deployment = await db.publicDeployments.findFirst({
+            where: {
+                id
+            }
+        });
+
+        if (!deployment) {
+            return res.status(404).json({ message: "Deployment not found!" });
+        }
+
+        if (deployment.live) {
+            // subscribe user to io
+            res.status(200).json({ live: true, logs: [], subdomain: deployment.subdomain });
+        } else {
+            const logs = await UserService.getDeploymentLogs(id);
+            res.status(200).json({ logs, live: false, subdomain: deployment.subdomain });
+        }
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({ message: "Error getting logs" });
     }
 }
