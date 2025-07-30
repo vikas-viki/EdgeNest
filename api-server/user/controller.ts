@@ -51,7 +51,6 @@ export const newProject = async (req: Request, res: Response) => {
 
 export const deployAgain = async (req: Request, res: Response) => {
     try {
-        console.log("new deployment");
         const data = NewDeploymentScheema.parse(req.body);
         const envs: Record<string, string>[] = [];
 
@@ -67,6 +66,10 @@ export const deployAgain = async (req: Request, res: Response) => {
 
         if (!project) {
             return res.status(400).json({ message: "Project not found!" });
+        }
+
+        if (project.status == "IN_PROGRESS") {
+            return res.status(202).json({ message: "Deployment in progress" });
         }
 
         data.env.trim().split("\n").forEach(e => {

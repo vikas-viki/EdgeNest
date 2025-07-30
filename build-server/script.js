@@ -34,6 +34,7 @@ const kafkaClient = new Kafka({
 const kafkaProducer = kafkaClient.producer({
     createPartitioner: Partitioners.LegacyPartitioner
 });
+const subdomain = process.env.SUB_DOMAIN;
 const projectID = process.env.PROJECT_ID;
 const deploymentID = process.env.DEPLOYMENT_ID;
 
@@ -84,7 +85,7 @@ async function init() {
                 if (!fs.lstatSync(absPath).isDirectory()) {
                     const cmd = new PutObjectCommand({
                         Bucket: 'edgenest-output',
-                        Key: `__outputs/${projectID}/${filePath}`,
+                        Key: `__outputs/${subdomain}/${filePath}`,
                         Body: fs.createReadStream(absPath),
                         ContentType: mimetype.lookup(filePath) || 'application/octet-stream',
                     });

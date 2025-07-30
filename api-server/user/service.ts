@@ -13,7 +13,7 @@ export class UserService {
         securityGroups: ["sg-0022fbb54b8684052"]
     };
 
-    static async newTask(data: { projectId: string, gitUrl: string, outputFolder: string, repoBranch: string, deploymentId: string, envs: Record<string, string>[] }) {
+    static async newTask(data: { projectId: string, subdomain: string, gitUrl: string, outputFolder: string, repoBranch: string, deploymentId: string, envs: Record<string, string>[] }) {
         const cmd = new RunTaskCommand({
             cluster: this.config.CLUSTER,
             taskDefinition: this.config.TASK,
@@ -35,10 +35,10 @@ export class UserService {
                                 name: 'PROJECT_ID',
                                 value: data.projectId
                             },
-                            // {
-                            //     name: 'KAFKAJS_NO_PARTITIONER_WARNING',
-                            //     value: '1'
-                            // },
+                            {
+                                name: 'SUB_DOMAIN',
+                                value: data.subdomain
+                            },
                             {
                                 name: 'GIT_REPOSITORY_URL',
                                 value: data.gitUrl
@@ -106,7 +106,7 @@ export class UserService {
             }
         });
 
-        await this.newTask({ projectId: publicDeployment.id, gitUrl: data.gitUrl, outputFolder: data.outputFolder, repoBranch: data.repoBranch, deploymentId: publicDeployment.id, envs });
+        await this.newTask({ projectId: publicDeployment.id, subdomain: phrase, gitUrl: data.gitUrl, outputFolder: data.outputFolder, repoBranch: data.repoBranch, deploymentId: publicDeployment.id, envs });
         return publicDeployment.id;
     }
 
@@ -156,7 +156,7 @@ export class UserService {
                 projectId: project.id
             }
         })
-        await this.newTask({ projectId: project.id, gitUrl: data.gitUrl, outputFolder: data.outputFolder, repoBranch: data.repoBranch, deploymentId: deployment.id, envs });
+        await this.newTask({ projectId: project.id, subdomain: data.subDomain, gitUrl: data.gitUrl, outputFolder: data.outputFolder, repoBranch: data.repoBranch, deploymentId: deployment.id, envs });
     };
 
     static async newDeployment(data: NewDeploymentData, envs: Record<string, string>[], userId: string) {
@@ -167,6 +167,14 @@ export class UserService {
             }
         });
         if (!prevDeployment) return;
+        await db.project.update({
+            where: {
+                id: data.id
+            },
+            data: {
+                status: "IN_PROGRESS"
+            }
+        })
         await db.deployment.update({
             where: {
                 id: prevDeployment.id
@@ -185,7 +193,6 @@ export class UserService {
                     name: data.name,
                     gitUrl: data.gitUrl,
                     repoBranch: data.repoBranch,
-                    status: "IN_PROGRESS",
                     subDomain: data.subDomain,
                     outputFolder: data.outputFolder
                 }
@@ -196,7 +203,7 @@ export class UserService {
                 projectId: data.id
             }
         })
-        await this.newTask({ projectId: data.id, gitUrl: data.gitUrl, outputFolder: data.outputFolder, repoBranch: data.repoBranch, deploymentId: deployment.id, envs });
+        await this.newTask({ projectId: data.id, subdomain: data.subDomain, gitUrl: data.gitUrl, outputFolder: data.outputFolder, repoBranch: data.repoBranch, deploymentId: deployment.id, envs });
     };
 
     static async getProjectDeployments(projectId: string) {

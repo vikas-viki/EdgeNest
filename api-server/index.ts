@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import { io, publicIO } from "./lib/clients";
 import dotenv from "dotenv";
 import { authRouter } from "./auth/route";
@@ -18,7 +18,6 @@ const limiter = rateLimit({
 })
 const app = express();
 
-
 app.use(cors({
     origin: "http://localhost:3000",
     credentials: true
@@ -27,7 +26,9 @@ app.use(limiter);
 app.use(express.json());
 app.use(cookieParser());
 
-
+app.get("/health", (req: Request, res: Response) => {
+    res.status(200).json({ message: "All good!" });
+})
 app.use("/user", userRouter);
 app.use("/auth", authRouter);
 

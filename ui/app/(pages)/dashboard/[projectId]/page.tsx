@@ -7,10 +7,10 @@ import { getLiveLink } from '@/app/lib/helpers';
 import { NewDeploymentData } from '@/app/lib/types';
 import { authStore } from '@/app/stores/auth';
 import { userStore } from '@/app/stores/user';
-import { Settings } from 'lucide-react';
+import { Loader2, Settings } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { use, useEffect } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 import { useStore } from 'zustand';
 
@@ -19,6 +19,7 @@ const ProjectDeployment = ({ params }: { params: Promise<{ projectId: string }> 
     const router = useRouter();
     const { authenticated } = useStore(authStore);
     const { selectedProject, getProjectDeployments, newDeployment, deployments, userData, setSelectedProject, getUserData } = useStore(userStore);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (!deployments[project.projectId]) {
@@ -27,7 +28,11 @@ const ProjectDeployment = ({ params }: { params: Promise<{ projectId: string }> 
     }, [deployments, project.projectId]);
 
     const deployAgain = async () => {
-        if (!selectedProject) return;
+        if (!selectedProject || loading) return;
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+        }, 2000);
         const data: NewDeploymentData = {
             changes: false,
             id: selectedProject.id,
@@ -80,9 +85,16 @@ const ProjectDeployment = ({ params }: { params: Promise<{ projectId: string }> 
                         <button
                             onClick={(e) => {
                                 e.stopPropagation();
-                                deployAgain();
+                                if (!loading)
+                                    deployAgain();
                             }}
-                            className='rounded-lg font-semibold text-white bg-black flex justify-center items-center p-2 gap-1 outline-none border-black border-1 hover:bg-orange-100 hover:text-black cursor-pointer px-3 text-sm transition-all duration-200'><span>Deploy Again</span></button>
+                            className='rounded-lg font-semibold text-white bg-black flex justify-center items-center p-2 gap-1 outline-none border-black border-1 hover:bg-orange-100 hover:text-black cursor-pointer px-3 text-sm transition-all duration-200'>
+                            {loading ?
+                                <Loader2 className='animate-spin' size={20} />
+                                :
+                                <span>Deploy Again</span>
+                            }
+                        </button>
 
                     </div>
                 </div>
