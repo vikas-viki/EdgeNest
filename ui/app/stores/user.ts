@@ -164,6 +164,9 @@ export const userStore = createStore<UserStoreData>()((set, get) => ({
             withCredentials: true,
             transports: ["websocket"]
         });
+        s.on("connect", () => {
+            console.log("private socket connected!")
+        })
         set({ socket: s });
     },
     joinDeploymentRoom: (deploymentId, projectId) => {
