@@ -33,7 +33,7 @@ export const kafkaClient = new Kafka({
     }
 });
 export const kafkaConsumer = kafkaClient.consumer({ groupId: 'edgenest-logs-consumers' });
-export const io = new Server(SERVER, { cors: { origin: "http://localhost:3000", credentials: true } });
+export const io = new Server(SERVER, { cors: { origin: process.env.FRONTEND_URL, credentials: true } });
 export const publicIO = io.of("/public");
 export const privateIO = io.of("/private");
 export const ecsClient = new ECSClient({

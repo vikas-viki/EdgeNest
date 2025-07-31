@@ -24,12 +24,12 @@ privateIO.use(async (socket: Socket, next) => {
     const token = cookies.session_token;
 
     if (!token) {
-        return new Error("No session token");
+        return next(new Error("No session token"));
     }
 
     const res = await isSessionValid(token);
     if (!res.isValid || !res.user) {
-        return new Error("Invalid session token!");
+        return next(new Error("Invalid session token!"));
     }
 
     socket.user = res.user;
