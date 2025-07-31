@@ -61,7 +61,7 @@ jobs:
               uses: appleboy/ssh-action@v1.0.3
               with:
                 host: ${{ secrets.EC2_HOST }}
-                username: root
+                username: ubuntu
                 key: ${{ secrets.EC2_SSH_KEY }}
                 script: |
                     IMAGE_NAME=${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY_UI }}:latest
@@ -75,7 +75,7 @@ jobs:
               uses: appleboy/ssh-action@v1.0.3
               with:
                 host: ${{ secrets.EC2_HOST }}
-                username: root
+                username: ubuntu
                 key: ${{ secrets.EC2_SSH_KEY }}
                 script: |
                     aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
