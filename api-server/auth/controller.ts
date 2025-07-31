@@ -24,7 +24,7 @@ export const auth = async (req: Request, res: Response) => {
         res.cookie('session_token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
+            sameSite: "none",
             path: '/',
             maxAge: 7 * 23 * 60 * 60 * 1000
         }).status(200).json({ message: "Authentication successful!" });
