@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 import { PrismaClient } from '../prisma-client';
 import { createServer } from "http";
 import express from 'express';
-dotenv.config();
+dotenv.config({path: process.env.NODE_ENV == "production" ? '.env.production' : '.env.local'});
 
 const KAFKA_SERVICE_URL = process.env.KAFKA_SERVICE_URL;
 const KAFKA_USERNAME = process.env.KAFKA_USERNAME;

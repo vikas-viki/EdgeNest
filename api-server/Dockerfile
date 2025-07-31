@@ -1,0 +1,23 @@
+FROM node:22-slim AS builder
+
+WORKDIR /app
+
+COPY package.json ./package.json
+COPY pnpm-lock.yaml ./pnpm-lock.yaml
+
+RUN npm install -g pnpm
+RUN pnpm install
+
+COPY . .
+RUN pnpm build
+
+FROM node:22-slim
+
+WORKDIR /app
+
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/node_modules ./node_modules
+
+ENV NODE_ENV=production
+CMD ["pnpm" ,"start"]
