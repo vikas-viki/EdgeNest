@@ -9,7 +9,7 @@ import rateLimit from "express-rate-limit";
 import { initKafkaSubscribe } from "./lib/ws";
 dotenv.config();
 
-const PORT = process.env.PORT || 9000;
+const PORT = process.env.PORT || 3001;
 const limiter = rateLimit({
     windowMs: 5 * 60 * 1000,
     max: 100,

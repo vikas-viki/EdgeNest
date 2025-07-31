@@ -1,0 +1,84 @@
+name: Build and deploy edgenest
+
+on:
+    push: 
+        branches: [main]
+
+jobs: 
+    builder:
+        runs-on: ubuntu-latest
+
+        env:
+            ECR_REGISTRY: ${{secrets.ECR_REGISTRY}}
+            IMAGE_TAG: latest
+
+        steps: 
+            - name: Checkout repo
+              uses: actions/checkout@v4
+
+            - name: Configure AWS credentials
+              uses: aws-actions/configure-aws-credentials@v2
+              with:
+                    aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+                    aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+                    aws-region: ${{secrets.AWS_REGION}}
+    
+            - name: Login to ECR
+              id: login-erc
+              uses: aws-actions/amazon-ecr-login@v2
+
+            - name: Build and push ui
+              env: 
+                ECR_REPOSITORY_UI: ${{secrets.ECR_REPOSITORY_UI}}
+              run: |
+                IMAGE_NAME=$ECR_REGISTRY/$ECR_REPOSITORY_UI:$IMAGE_TAG
+                docker build ./ui -t $IMAGE_NAME
+                docker push $IMAGE_NAME
+
+            
+            - name: Build and push build-server
+              env: 
+                ECR_REPOSITORY_BS: ${{secrets.ECR_REPOSITORY_BS}}
+              run: |
+                IMAGE_NAME=$ECR_REGISTRY/$ECR_REPOSITORY_BS:$IMAGE_TAG
+                docker build ./build-server -t $IMAGE_NAME
+                docker push $IMAGE_NAME
+
+
+            - name: Build and push api-server
+              env: 
+                ECR_REPOSITORY_AS: ${{secrets.ECR_REPOSITORY_AS}}
+              run: |
+                IMAGE_NAME=$ECR_REGISTRY/$ECR_REPOSITORY_AS:$IMAGE_TAG
+                docker build ./api-server -t $IMAGE_NAME
+                docker push $IMAGE_NAME
+
+    deploy: 
+        runs-on: ubuntu-latest
+
+        steps: 
+            - name: Deploy ui to EC2
+              uses: appleboy/ssh-action@v1.0.3
+              with:
+                host: ${{ secrets.EC2_HOST }}
+                username: root
+                key: ${{ secrets.EC2_SSH_KEY }}
+                script: |
+                    IMAGE_NAME=${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY_UI }}:latest
+                    docker pull $IMAGE_NAME
+                    docker stop ui || true
+                    docker rm ui || true
+                    docker run -d --name ui -p 80:80 $IMAGE_NAME
+            
+            - name: Deploy api-server to EC2
+              uses: appleboy/ssh-action@v1.0.3
+              with:
+                host: ${{ secrets.EC2_HOST }}
+                username: root
+                key: ${{ secrets.EC2_SSH_KEY }}
+                script: |
+                    IMAGE_NAME=${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY_AS }}:latest
+                    docker pull $IMAGE_NAME
+                    docker stop api-server || true
+                    docker rm api-server || true
+                    docker run -d --name api-server -p 80:80 $IMAGE_NAME
