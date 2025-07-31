@@ -55,7 +55,7 @@ jobs:
 
     deploy: 
         runs-on: ubuntu-latest
-
+        needs: builder
         steps: 
             - name: Deploy ui to EC2
               uses: appleboy/ssh-action@v1.0.3
