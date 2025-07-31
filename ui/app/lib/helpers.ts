@@ -1,4 +1,4 @@
-import { SITE_URL } from "./constants";
+import { SERVER_URL, SITE_URL } from "./constants";
 
 export const timeAgo = (date: Date) => {
     const now = new Date();
@@ -25,5 +25,5 @@ export const timeAgo = (date: Date) => {
 }
 
 export const getLiveLink = (subdomain: string) => {
-    return `http://${subdomain}${SITE_URL}`
+    return `${SERVER_URL.includes("https") ? "https" : "http"}://${subdomain}${SITE_URL}`
 }
