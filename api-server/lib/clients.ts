@@ -2,18 +2,15 @@ import { createClient } from '@clickhouse/client'
 import { ECSClient } from "@aws-sdk/client-ecs";
 import { Kafka } from "kafkajs";
 import { Server } from "socket.io";
-import dotenv from "dotenv";
 import { PrismaClient } from '../prisma-client';
 import { createServer } from "http";
 import express from 'express';
-dotenv.config({path: process.env.NODE_ENV == "production" ? '.env.production' : '.env.local'});
 
-const KAFKA_SERVICE_URL = process.env.KAFKA_SERVICE_URL;
-const KAFKA_USERNAME = process.env.KAFKA_USERNAME;
-const KAFKA_PASSWORD = process.env.KAFKA_PASSWORD;
-const ECS_ACCESS_KEYID = process.env.S3_ACCESS_KEY;
-const ECS_SECRET_KEY = process.env.S3_SECRET_KEY;
-
+const KAFKA_SERVICE_URL = process.env.KAFKA_SERVICE_URL?.toString();
+const KAFKA_USERNAME = process.env.KAFKA_USERNAME?.toString();
+const KAFKA_PASSWORD = process.env.KAFKA_PASSWORD?.toString();
+const ECS_ACCESS_KEYID = process.env.S3_ACCESS_KEY?.toString();
+const ECS_SECRET_KEY = process.env.S3_SECRET_KEY?.toString();
 
 if (!KAFKA_SERVICE_URL || !KAFKA_USERNAME || !KAFKA_PASSWORD) throw ("Env not found!");
 if (!ECS_ACCESS_KEYID || !ECS_SECRET_KEY) {
@@ -45,7 +42,7 @@ export const ecsClient = new ECSClient({
 })
 export const db = new PrismaClient()
 export const clickhouseClient = createClient({
-    url: process.env.CLICKHOUSE_URL,
+    url: process.env.CLICKHOUSE_URL?.toString(),
     username: 'default',
-    password: process.env.CLICKHOUSE_PASSWORD,
+    password: process.env.CLICKHOUSE_PASSWORD?.toString(),
 });

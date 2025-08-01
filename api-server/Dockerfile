@@ -7,11 +7,14 @@ COPY pnpm-lock.yaml ./pnpm-lock.yaml
 
 RUN npm install -g pnpm
 RUN pnpm install
+RUN pnpm approve-builds @prisma/client
 
 COPY . .
+RUN npx prisma generate
+ENV NODE_ENV=production
 RUN pnpm build
 
-FROM node:22-slim
+FROM node:22
 
 WORKDIR /app
 
