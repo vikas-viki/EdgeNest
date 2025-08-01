@@ -29,8 +29,8 @@ app.use(cookieParser());
 app.get("/health", (req: Request, res: Response) => {
     res.status(200).json({ message: "All good!" });
 })
-app.use("/user", userRouter);
-app.use("/auth", authRouter);
+app.use("/api/user", userRouter);
+app.use("/api/auth", authRouter);
 
 console.log("Socket server running  on port 9001 & 9002");
 
