@@ -15,9 +15,11 @@ FROM node:22-slim
 
 WORKDIR /app
 
+RUN npm install -g pm2
+
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/node_modules ./node_modules
 
 ENV NODE_ENV=production
-CMD ["npm" ,"start"]
+CMD ["pm2-runtime" ,"start"]
