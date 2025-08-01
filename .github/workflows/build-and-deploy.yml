@@ -67,7 +67,8 @@ jobs:
                 username: ubuntu
                 key: ${{ secrets.EC2_SSH_KEY }}
                 source: "ui/ui-env.gpg,api-server/api-server-env.gpg"
-                target: "~/"
+                target: "/home/ubuntu"
+                overwrite: true
 
             - name: Deploy ui to EC2
               uses: appleboy/ssh-action@v1.0.3
@@ -81,9 +82,8 @@ jobs:
                     docker pull $IMAGE_NAME
                     docker stop ui || true
                     docker rm ui || true
-                    mkdir ui || true
-                    gpg --batch --passphrase ${{secrets.GPG_SECRET}} --output './ui/.env' --decrypt 'ui-env.gpg'
-                    docker run -d --name ui --env-file './ui/.env' -p 3000:3000 $IMAGE_NAME
+                    gpg --batch --passphrase ${{secrets.GPG_SECRET}} --output 'ui.env' --decrypt 'ui-env.gpg'
+                    docker run -d --name ui --env-file 'ui.env' -p 3000:3000 $IMAGE_NAME
                     
             - name: Deploy api-server to EC2
               uses: appleboy/ssh-action@v1.0.3
@@ -97,7 +97,6 @@ jobs:
                   docker pull $IMAGE_NAME
                   docker stop api-server || true
                   docker rm api-server || true
-                  mkdir api-server || true
-                  gpg --batch --passphrase ${{secrets.GPG_SECRET}} --output './api-server/.env' --decrypt 'api-server-env.gpg'
-                  docker run -d --name api-server --env-file './api-server/.env' -p 3001:3001 $IMAGE_NAME
+                  gpg --batch --passphrase ${{secrets.GPG_SECRET}} --output 'api-server.env' --decrypt 'api-server-env.gpg'
+                  docker run -d --name api-server --env-file 'api-server.env' -p 3001:3001 $IMAGE_NAME
                   docker system prune -f
