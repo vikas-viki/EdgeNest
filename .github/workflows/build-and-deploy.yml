@@ -60,20 +60,13 @@ jobs:
             - name: Checkout repo
               uses: actions/checkout@v4
 
-            - name: Check that .gpg files exist
-              run: |
-                ls -lh ./ui/ui-env.gpg
-                ls -lh ./api-server/api-server-env.gpg
-
             - name: Upload env files to EC2
               uses: appleboy/scp-action@master
               with:
                 host: ${{ secrets.EC2_HOST }}
                 username: ubuntu
                 key: ${{ secrets.EC2_SSH_KEY }}
-                source: |
-                  ./ui/ui-env.gpg
-                  ./api-server/api-server-env.gpg
+                source: "ui/ui-env.gpg,api-server/api-server-env.gpg"
                 target: "~/"
 
             - name: Deploy ui to EC2
