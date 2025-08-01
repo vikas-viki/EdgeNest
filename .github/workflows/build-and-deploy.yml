@@ -63,7 +63,9 @@ jobs:
                 host: ${{ secrets.EC2_HOST }}
                 username: ubuntu
                 key: ${{ secrets.EC2_SSH_KEY }}
-                source: "./ui/ui-env.gpg,./api-server/api-server-env.gpg"
+                source: |
+                  ./ui/ui-env.gpg
+                  ./api-server/api-server-env.gpg
                 target: "~/"
 
             - name: Deploy ui to EC2
