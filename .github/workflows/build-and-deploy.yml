@@ -57,6 +57,11 @@ jobs:
         runs-on: ubuntu-latest
         needs: builder
         steps: 
+            - name: Check that .gpg files exist
+              run: |
+                ls -lh ./ui/ui-env.gpg
+                ls -lh ./api-server/api-server-env.gpg
+
             - name: Upload env files to EC2
               uses: appleboy/scp-action@master
               with:
