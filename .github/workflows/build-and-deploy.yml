@@ -57,6 +57,15 @@ jobs:
         runs-on: ubuntu-latest
         needs: builder
         steps: 
+            - name: Upload env files to EC2
+              uses: appleboy/scp-action@master
+              with:
+                host: ${{ secrets.EC2_HOST }}
+                username: ubuntu
+                key: ${{ secrets.EC2_SSH_KEY }}
+                source: "./ui/ui-env.gpg,./api-server/api-server-env.gpg"
+                target: "~/"
+
             - name: Deploy ui to EC2
               uses: appleboy/ssh-action@v1.0.3
               with:
@@ -69,7 +78,9 @@ jobs:
                     docker pull $IMAGE_NAME
                     docker stop ui || true
                     docker rm ui || true
-                    docker run -d --name ui -p 3000:3000 $IMAGE_NAME
+                    mkdir ui || true
+                    gpg --batch --passphrase ${{secrets.GPG_SECRET}} --output './ui/.env' --decrypt 'ui-env.gpg'
+                    docker run -d --name ui --env-file './ui/.env' -p 3000:3000 $IMAGE_NAME
                     
             - name: Deploy api-server to EC2
               uses: appleboy/ssh-action@v1.0.3
@@ -78,10 +89,12 @@ jobs:
                 username: ubuntu
                 key: ${{ secrets.EC2_SSH_KEY }}
                 script: |
-                    aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
-                    IMAGE_NAME=${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY_AS }}:latest
-                    docker pull $IMAGE_NAME
-                    docker stop api-server || true
-                    docker rm api-server || true
-                    docker run -d --name api-server -p 3001:3001 $IMAGE_NAME
-                    docker system prune -f
+                  IMAGE_NAME=${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY_AS }}:latest
+                  aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
+                  docker pull $IMAGE_NAME
+                  docker stop api-server || true
+                  docker rm api-server || true
+                  mkdir api-server || true
+                  gpg --batch --passphrase ${{secrets.GPG_SECRET}} --output './api-server/.env' --decrypt 'api-server-env.gpg'
+                  docker run -d --name api-server --env-file './api-server/.env' -p 3001:3001 $IMAGE_NAME
+                  docker system prune -f
