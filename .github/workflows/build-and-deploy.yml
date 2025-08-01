@@ -78,13 +78,15 @@ jobs:
                 key: ${{ secrets.EC2_SSH_KEY }}
                 script: |
                     cd ui && gpg --batch --passphrase ${{secrets.GPG_SECRET}} --output '.env' --decrypt 'ui-env.gpg'
+                    ls -a
                     cd api-server && gpg --batch --passphrase ${{secrets.GPG_SECRET}} --output '.env' --decrypt 'api-server-env.gpg'
+                    ls -a
                     IMAGE_NAME=${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY_UI }}:latest
                     aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
                     docker pull $IMAGE_NAME
                     docker stop ui || true
                     docker rm ui || true
-                    cd ui && docker run -d --name ui --env-file 'ui.env' -p 3000:3000 $IMAGE_NAME
+                    cd ~/ui && ls -a && docker run -d --name ui --env-file '.env' -p 3000:3000 $IMAGE_NAME
 
             - name: Deploy api-server to EC2
               uses: appleboy/ssh-action@v1.0.3
@@ -98,5 +100,5 @@ jobs:
                   docker pull $IMAGE_NAME
                   docker stop api-server || true
                   docker rm api-server || true
-                  cd api-server && docker run -d --name api-server --env-file '.env' -p 3001:3001 $IMAGE_NAME
+                  cd ~/api-server && docker run -d --name api-server --env-file '.env' -p 3001:3001 $IMAGE_NAME
                   docker system prune -f
