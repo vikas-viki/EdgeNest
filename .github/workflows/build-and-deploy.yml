@@ -67,6 +67,7 @@ jobs:
 
             - name: Upload env files via scp
               run: |
+                ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} "rm -f ~/ui/.env ~/api-server/.env"
                 scp -o StrictHostKeyChecking=no ui/ui-env.gpg ubuntu@${{ secrets.EC2_HOST }}:~/ui/
                 scp -o StrictHostKeyChecking=no api-server/api-server-env.gpg ubuntu@${{ secrets.EC2_HOST }}:~/api-server/
 
