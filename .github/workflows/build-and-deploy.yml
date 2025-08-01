@@ -67,7 +67,7 @@ jobs:
                 username: ubuntu
                 key: ${{ secrets.EC2_SSH_KEY }}
                 source: "ui/ui-env.gpg,api-server/api-server-env.gpg"
-                target: "/home/ubuntu"
+                target: "/home/ubuntu/"
                 overwrite: true
 
             - name: Deploy ui to EC2
