@@ -60,15 +60,15 @@ jobs:
             - name: Checkout repo
               uses: actions/checkout@v4
 
-            - name: Upload env files to EC2
-              uses: appleboy/scp-action@master
+            - name: Start ssh-agent
+              uses: webfactory/ssh-agent@v0.9.0
               with:
-                host: ${{ secrets.EC2_HOST }}
-                username: ubuntu
-                key: ${{ secrets.EC2_SSH_KEY }}
-                source: "ui/ui-env.gpg,api-server/api-server-env.gpg"
-                target: "/home/ubuntu/"
-                overwrite: true
+                ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+            - name: Upload env files via scp
+              run: |
+                scp -o StrictHostKeyChecking=no ui/ui-env.gpg ubuntu@${{ secrets.EC2_HOST }}:~/ui/
+                scp -o StrictHostKeyChecking=no api-server/api-server-env.gpg ubuntu@${{ secrets.EC2_HOST }}:~/api-server/
 
             - name: Deploy ui to EC2
               uses: appleboy/ssh-action@v1.0.3
@@ -82,7 +82,7 @@ jobs:
                     docker pull $IMAGE_NAME
                     docker stop ui || true
                     docker rm ui || true
-                    cd ~/ui && gpg --batch --passphrase ${{secrets.GPG_SECRET}} --output '.env' --decrypt 'ui-env.gpg' && ls -a && docker run -d --name ui --env-file '.env' -p 3000:3000 $IMAGE_NAME
+                    cd ~/ui && gpg --batch --passphrase ${{secrets.GPG_SECRET}} --output '.env' --decrypt 'ui-env.gpg' && docker run -d --name ui --env-file '.env' -p 3000:3000 $IMAGE_NAME
 
             - name: Deploy api-server to EC2
               uses: appleboy/ssh-action@v1.0.3
@@ -96,5 +96,5 @@ jobs:
                   docker pull $IMAGE_NAME
                   docker stop api-server || true
                   docker rm api-server || true
-                  cd ~/api-server && gpg --batch --passphrase ${{secrets.GPG_SECRET}} --output '.env' --decrypt 'api-server-env.gpg' && ls -a && docker run -d --name api-server --env-file '.env' -p 3001:3001 $IMAGE_NAME
+                  cd ~/api-server && gpg --batch --passphrase ${{secrets.GPG_SECRET}} --output '.env' --decrypt 'api-server-env.gpg' && docker run -d --name api-server --env-file '.env' -p 3001:3001 $IMAGE_NAME
                   docker system prune -f
