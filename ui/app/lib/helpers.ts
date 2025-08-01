@@ -25,5 +25,5 @@ export const timeAgo = (date: Date) => {
 }
 
 export const getLiveLink = (subdomain: string) => {
-    return `${SERVER_URL.includes("https") ? "https" : "http"}://${subdomain}${SITE_URL}`
+    return `${SERVER_URL?.includes("https") ? "https" : "http"}://${subdomain}${SITE_URL}`
 }
