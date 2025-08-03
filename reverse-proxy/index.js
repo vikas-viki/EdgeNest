@@ -28,3 +28,4 @@
 // });
 
 // initially it was express proxy, but now we're moving to nginx proxy
+// then we moved to cloudfront distribution

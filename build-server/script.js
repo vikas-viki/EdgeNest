@@ -106,7 +106,6 @@ async function init() {
     } catch (e) {
         await publishLog(e.message ?? "Error on building!");
     } finally {
-        console.log("all done!");
     }
 }
 init();

@@ -7,13 +7,17 @@
     "dev": "nodemon",
     "start": "pm2 start dist/index.js",
     "copy:prisma": "cp -r ./prisma-client ./dist/prisma-client",
-    "build": "tsc && npm run copy:prisma"
+    "build": "tsc && npm run copy:prisma",
+    "clear:S3": "aws s3 rm s3://edgenest-output/__outputs --recursive --region ap-south-1",
+    "reset:prisma": "npx prisma migrate reset -f",
+    "reset:data": "npm run reset:prisma && npm run clear:S3"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-ecs": "^3.848.0",
+    "@aws-sdk/client-s3": "^3.859.0",
     "@clickhouse/client": "^1.12.0",
     "@prisma/client": "6.12.0",
     "@types/axios": "^0.14.4",

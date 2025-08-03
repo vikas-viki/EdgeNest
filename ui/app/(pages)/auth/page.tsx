@@ -6,6 +6,7 @@ import { useStore } from 'zustand';
 import { authStore } from '@/app/stores/auth';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { REDIRECT_URI } from '@/app/lib/constants';
 
 const Auth = ({ searchParams }: { searchParams: Promise<{ code?: string, installation_id: string }> }) => {
 
@@ -20,8 +21,8 @@ const Auth = ({ searchParams }: { searchParams: Promise<{ code?: string, install
     const params = use(searchParams);
     const { authenticateUser, loading } = useStore(authStore);
 
-    const authURL = `https://github.com/login/oauth/authorize?client_id=Iv23liqZTJvBNg3PVNJL`;
-    const installURL = "https://github.com/apps/EdgeNestX/installations/new";
+    const authURL = `https://github.com/login/oauth/authorize?client_id=Iv23liqZTJvBNg3PVNJL&redirect_uri=${REDIRECT_URI}`;
+    const installURL = `https://github.com/apps/EdgeNestX/installations/new?redirect_uri=${REDIRECT_URI}`;
 
     const authenticateUser2 = async () => {
         if (params.code) {

@@ -23,7 +23,7 @@ export const auth = async (req: Request, res: Response) => {
 
         res.cookie('session_token', token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            secure: true,
             sameSite: "none",
             path: '/',
             maxAge: 7 * 23 * 60 * 60 * 1000

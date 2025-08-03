@@ -1,13 +1,14 @@
 import express, { Request, Response } from "express";
 import { app, SERVER } from "./lib/clients";
-import dotenv from "dotenv";
 import { authRouter } from "./auth/route";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { userRouter } from "./user/route";
 import rateLimit from "express-rate-limit";
 import { initKafkaSubscribe } from "./lib/ws";
-dotenv.config();
+import dotenv from "dotenv";
+
+dotenv.config({path: process.env.NODE_ENV == "production" ? ".env.production" : ".env.local"});
 
 const PORT = process.env.PORT || 3001;
 const limiter = rateLimit({
@@ -17,7 +18,7 @@ const limiter = rateLimit({
     legacyHeaders: true,
     message: "Rate limit exceeded!"
 })
-
+console.log({env: process.env.FRONTEND_URL})
 app.use(cors({
     origin: process.env.FRONTEND_URL,
     credentials: true

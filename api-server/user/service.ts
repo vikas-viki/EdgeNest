@@ -2,8 +2,14 @@ import { RunTaskCommand } from "@aws-sdk/client-ecs";
 import { UserDataResponse } from "../lib/types";
 import { project, user } from "../prisma-client";
 import { NewDeploymentData, NewProjectData, PublicDeploymentData } from "./scheema";
-import { clickhouseClient, db, ecsClient } from "../lib/clients";
+import { clickhouseClient, db, ecsClient, s3Client } from "../lib/clients";
 import { generateSlug } from "random-word-slugs";
+import {
+    ListObjectsV2Command,
+    CopyObjectCommand,
+    DeleteObjectsCommand
+} from "@aws-sdk/client-s3";
+import { S3_BUCKET } from "../lib/constants";
 
 export class UserService {
     static config = {
@@ -83,6 +89,95 @@ export class UserService {
         });
 
         await ecsClient.send(cmd);
+    }
+
+    static async deleteOldFolders(data: { oldDomain: string }): Promise<void> {
+        try {
+            const oldFolders = await s3Client.send(
+                new ListObjectsV2Command({
+                    Bucket: S3_BUCKET,
+                    Prefix: `__outputs/${data.oldDomain}`
+                })
+            )
+            if (!oldFolders.Contents || oldFolders.Contents.length == 0) {
+                console.log("No contents found!");
+                return;
+            }
+
+            await s3Client.send(
+                new DeleteObjectsCommand({
+                    Bucket: S3_BUCKET,
+                    Delete: {
+                        Objects: oldFolders.Contents.map((obj) => ({ Key: obj.Key! })),
+                        Quiet: true
+                    }
+                })
+            )
+        } catch (e) {
+            console.log("erorr deleteing old folders", e);
+        }
+    }
+
+    static async updateSubdomain(data: { projectId: string, oldDomain: string, newDomain: string }): Promise<boolean> {
+        if (data.oldDomain === data.newDomain) return true;
+
+        try {
+            await db.project.update({
+                where: {
+                    id: data.projectId
+                },
+                data: {
+                    status: "IN_PROGRESS"
+                }
+            });
+            const oldFolders = await s3Client.send(
+                new ListObjectsV2Command({
+                    Bucket: S3_BUCKET,
+                    Prefix: `__outputs/${data.oldDomain}`
+                })
+            )
+
+            if (!oldFolders.Contents || oldFolders.Contents.length == 0) {
+                console.log("No contents found!");
+                return false;
+            }
+
+            await Promise.all(
+                oldFolders.Contents.map(async obj => {
+                    const oldKey = obj.Key!;
+                    const newKey = oldKey.replace(data.oldDomain, data.newDomain);
+                    await s3Client.send(
+                        new CopyObjectCommand({
+                            Bucket: S3_BUCKET,
+                            CopySource: `${S3_BUCKET}/${encodeURIComponent(oldKey)}`,
+                            Key: newKey
+                        })
+                    );
+                })
+            )
+            await s3Client.send(
+                new DeleteObjectsCommand({
+                    Bucket: S3_BUCKET,
+                    Delete: {
+                        Objects: oldFolders.Contents.map((obj) => ({ Key: obj.Key! })),
+                        Quiet: true
+                    }
+                })
+            )
+            return true;
+        } catch (e) {
+            console.log(e);
+            return false;
+        } finally {
+            await db.project.update({
+                where: {
+                    id: data.projectId
+                },
+                data: {
+                    status: "READY"
+                }
+            });
+        }
     }
 
     static async publicDeployment(data: PublicDeploymentData, envs: Record<string, string>[]): Promise<string> {
@@ -167,12 +262,15 @@ export class UserService {
             }
         });
         if (!prevDeployment) return;
-        await db.project.update({
+        const prevProject = await db.project.update({
             where: {
                 id: data.id
             },
             data: {
                 status: "IN_PROGRESS"
+            },
+            select: {
+                subDomain: true
             }
         })
         await db.deployment.update({
@@ -204,6 +302,9 @@ export class UserService {
             }
         })
         await this.newTask({ projectId: data.id, subdomain: data.subDomain, gitUrl: data.gitUrl, outputFolder: data.outputFolder, repoBranch: data.repoBranch, deploymentId: deployment.id, envs });
+        if (data.subDomain != prevProject.subDomain) {
+            await this.deleteOldFolders({ oldDomain: prevProject.subDomain })
+        }
     };
 
     static async getProjectDeployments(projectId: string) {
