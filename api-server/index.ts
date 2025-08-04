@@ -8,17 +8,18 @@ import rateLimit from "express-rate-limit";
 import { initKafkaSubscribe } from "./lib/ws";
 import dotenv from "dotenv";
 
-dotenv.config({path: process.env.NODE_ENV == "production" ? ".env.production" : ".env.local"});
+dotenv.config({ path: process.env.NODE_ENV == "production" ? ".env.production" : ".env.local" });
 
 const PORT = process.env.PORT || 3001;
 const limiter = rateLimit({
     windowMs: 5 * 60 * 1000,
     max: 100,
+    keyGenerator: (req) => req.user?.id || req.ip || "unknown-client",
     standardHeaders: true,
     legacyHeaders: true,
     message: "Rate limit exceeded!"
 })
-console.log({env: process.env.FRONTEND_URL})
+app.set('trust proxy', true);
 app.use(cors({
     origin: process.env.FRONTEND_URL,
     credentials: true

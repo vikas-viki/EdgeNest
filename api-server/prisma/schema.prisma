@@ -11,7 +11,7 @@ datasource db {
 model user {
   id             String    @id @default(uuid())
   userName       String
-  email          String
+  email          String    @unique
   avatar         String?
   type           String? // "User" or "Organization"
   installationId String? // GitHub App installation ID (if installed)
@@ -49,14 +49,14 @@ model deployment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   latest    Boolean  @default(true)
-  live      Boolean @default(true)// whether deployment logs needs to be sent over ws
+  live      Boolean  @default(true) // whether deployment logs needs to be sent over ws
 }
 
 //clickhouse db for logs deploymentID
 
 model publicDeployments {
-  id String @id @default(uuid())
+  id        String  @id @default(uuid())
   subdomain String
-  gitURL String
-  live Boolean @default(true)
+  gitURL    String
+  live      Boolean @default(true)
 }

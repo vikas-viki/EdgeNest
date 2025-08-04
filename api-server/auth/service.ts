@@ -55,17 +55,24 @@ export class AuthService {
         }
         const email = (emailResponse.data as EmailResponse[]).filter(e => e.primary);
         const { avatar_url, login: username, type, id } = userResponse.data;
-
-        const user = await db.user.create({
-            data: {
-                userName: username,
-                email: email[0].email,
-                avatar: avatar_url,
-                type,
-                installationId: installation_id,
-                subId: id.toString()
+        // we never see if the user already exists
+        let user = await db.user.findFirst({
+            where: {
+                email: email[0].email
             }
         });
+        if (!user) {
+            user = await db.user.create({
+                data: {
+                    userName: username,
+                    email: email[0].email,
+                    avatar: avatar_url,
+                    type,
+                    installationId: installation_id,
+                    subId: id.toString()
+                }
+            });
+        }
         return {
             status: 200,
             message: "Authentication successful!",

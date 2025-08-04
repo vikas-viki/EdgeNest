@@ -29,3 +29,5 @@
 
 // initially it was express proxy, but now we're moving to nginx proxy
 // then we moved to cloudfront distribution
+//  ssl_certificate /home/ubuntu/.acme.sh/*.edgenest.0xbuilder.in_ecc/fullchain.cer;
+//     ssl_certificate_key /home/ubuntu/.acme.sh/*.edgenest.0xbuilder.in_ecc/*.edgenest.0xbuilder.in.key;
