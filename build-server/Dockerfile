@@ -13,10 +13,8 @@ WORKDIR /builder
 COPY package.json package.json
 RUN npm install
 
-COPY main.sh main.sh
 COPY script.js script.js 
 
-RUN chmod +x main.sh
 RUN chmod +x script.js
 
-ENTRYPOINT [ "/builder/main.sh" ]
+CMD ["node", "script.js"]

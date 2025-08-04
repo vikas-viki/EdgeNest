@@ -1,111 +1,149 @@
-const { exec } = require("child_process");
+const { spawn } = require("child_process");
 const path = require("path");
 const fs = require("fs");
 const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 const mimetype = require("mime-types");
 const dotenv = require("dotenv");
-const { Kafka } = require("kafkajs");
+const { Kafka, Partitioners } = require("kafkajs");
 const { createClient } = require('@clickhouse/client');
-const { Partitioners } = require("kafkajs");
+const pLimit = require("p-limit").default;
 dotenv.config();
 
+[
+    "S3_ACCESS_KEY", "S3_SECRET_KEY", "SUB_DOMAIN", "PROJECT_ID", "DEPLOYMENT_ID",
+    "GIT_REPOSITORY_URL", "BRANCH", "KAFKA_SERVICE_URL", "KAFKA_USERNAME",
+    "KAFKA_PASSWORD", "CLICKHOUSE_URL", "CLICKHOUSE_PASSWORD", "OUTPUT_FOLDER"
+].forEach(key => {
+    if (!process.env[key]) throw new Error(`Missing env var: ${key}`);
+});
+
 const s3Client = new S3Client({
-    region: 'ap-south-1',
+    region: "ap-south-1",
     credentials: {
-        accessKeyId: process.env.S3_ACCESS_KEY.toString(),
-        secretAccessKey: process.env.S3_SECRET_KEY.toString()
+        accessKeyId: process.env.S3_ACCESS_KEY,
+        secretAccessKey: process.env.S3_SECRET_KEY,
     }
 });
+
 const clickhouseClient = createClient({
     url: process.env.CLICKHOUSE_URL,
-    username: 'default',
+    username: "default",
     password: process.env.CLICKHOUSE_PASSWORD,
 });
+
 const kafkaClient = new Kafka({
-    clientId: 'edge-nest',
-    brokers: [process.env.KAFKA_SERVICE_URL.toString()],
+    clientId: "edge-nest",
+    brokers: [process.env.KAFKA_SERVICE_URL],
     ssl: true,
     sasl: {
-        mechanism: 'plain',
+        mechanism: "plain",
         username: process.env.KAFKA_USERNAME,
-        password: process.env.KAFKA_PASSWORD
+        password: process.env.KAFKA_PASSWORD,
     }
 });
-const kafkaProducer = kafkaClient.producer({
-    createPartitioner: Partitioners.LegacyPartitioner
-});
+const kafkaProducer = kafkaClient.producer({ createPartitioner: Partitioners.LegacyPartitioner });
+
 const subdomain = process.env.SUB_DOMAIN;
 const projectID = process.env.PROJECT_ID;
 const deploymentID = process.env.DEPLOYMENT_ID;
+const githubUrl = process.env.GIT_REPOSITORY_URL;
+const gitBranch = process.env.BRANCH;
+const outputDir = path.join(__dirname, "output");
 
 let key = 0;
 const logs = [];
 
 async function publishLog(log) {
+    const text = Buffer.isBuffer(log) ? log.toString("utf-8") : log.toString();
+
     logs.push({
         deployment_id: deploymentID,
         timestamp: new Date(),
-        log: log.toString()
+        log: text,
     });
     try {
-        await kafkaProducer.send({
-            topic: `edgenest-projectbulid-logs`,
-            messages: [
-                { key: `log---${deploymentID}---${key++}---${projectID.toString().toLowerCase() == deploymentID.toString().toLowerCase() ? "YES": "NO"}`, value: log.toString() }
-            ]
-        });
+        // await kafkaProducer.send({
+        //   topic: `edgenest-projectbulid-logs`,
+        //   messages: [
+        //     {
+        //       key: `log---${deploymentID}---${key++}---${projectID === deploymentID ? "YES" : "NO"}`,
+        //       value: text
+        //     }
+        //   ]
+        // });
+        console.log(text);
     } catch (e) {
-        console.log("kafka error: ", e);
+        console.error("kafka error: ", e);
     }
+}
+
+async function task([cmd, ...args], doneMsg, options = {}) {
+    await new Promise(resolve => {
+        const spn = spawn(cmd, args, { shell: false, ...options });
+
+        spn.stdout.on("data", async data => await publishLog(data));
+        spn.stderr.on("data", async data => await publishLog(`${data}`));
+
+        spn.on("error", async () => {
+            await publishLog(`Error executing ${cmd} ${args.join(" ")}`);
+            resolve();
+        });
+        spn.on("exit", async () => {
+            await publishLog(doneMsg);
+            resolve();
+        });
+    });
 }
 
 async function init() {
     try {
         await kafkaProducer.connect();
-        await publishLog("Build Started...");
-        const outputDir = path.join(__dirname, "output");
 
-        const p = exec(`cd ${outputDir} && npm install && npm run build`);
+        await task(["git", "clone", "--branch", gitBranch, "--single-branch", githubUrl, outputDir], "Repository Cloned!");
 
-        p.stdout.on("data", async (data) => {
-            await publishLog(data.toString());
-        });
+        await publishLog("Installing dependencies...");
+        await task(["npm", "install"], "Installation complete!", { cwd: outputDir });
 
-        p.stderr.on("data", async (err) => {
-            await publishLog(`error: ${err.toString()}`);
-        });
+        await publishLog("Running build...");
+        await task(["npm", "run", "build"], "Build completed.", { cwd: outputDir });
 
-        p.on("close", async () => {
-            await publishLog("Build completed.");
-            const distFolderPath = path.join(__dirname, "output", process.env.OUTPUT_FOLDER);
-            const distFolderPathContent = fs.readdirSync(distFolderPath, { recursive: true });
-            await publishLog("Uploading started");
-            await Promise.all(distFolderPathContent.map(async (filePath) => {
+        await publishLog("Uploading started...");
+        const distFolderPath = path.join(outputDir, process.env.OUTPUT_FOLDER);
+        const limit = pLimit(5);
+
+        const files = fs.readdirSync(distFolderPath, { recursive: true });
+
+        await Promise.all(files.map(filePath =>
+            limit(async () => {
                 const absPath = path.join(distFolderPath, filePath);
-                if (!fs.lstatSync(absPath).isDirectory()) {
-                    const cmd = new PutObjectCommand({
-                        Bucket: 'edgenest-output',
+                const stat = fs.lstatSync(absPath);
+                if (!stat.isDirectory()) {
+                    await s3Client.send(new PutObjectCommand({
+                        Bucket: "edgenest-output",
                         Key: `__outputs/${subdomain}/${filePath}`,
                         Body: fs.createReadStream(absPath),
-                        ContentType: mimetype.lookup(filePath) || 'application/octet-stream',
-                    });
-
-                    await s3Client.send(cmd);
+                        ContentType: mimetype.lookup(filePath) || "application/octet-stream"
+                    }));
                     await publishLog(`Uploaded ${filePath}`);
                 }
-            }));
-            await publishLog("Upload complete!");
-            await publishLog("Deployment Suceeded!");
-            await publishLog("DEPLOYMENT_DONE");
-            await clickhouseClient.insert({
-                table: "deployment_logs",
-                values: logs,
-                format: "JSONEachRow"
-            });
-        })
+            })
+        ));
+
+        await publishLog("Upload complete!");
+        await publishLog("Deployment Succeeded, Site Live!");
+        await publishLog("DEPLOYMENT_DONE");
+
+        await clickhouseClient.insert({
+            table: "deployment_logs",
+            values: logs,
+            format: "JSONEachRow"
+        });
     } catch (e) {
-        await publishLog(e.message ?? "Error on building!");
+        console.log(e);
+        await publishLog(e.message ?? "Build failed");
     } finally {
+        await kafkaProducer.disconnect();
     }
 }
+
 init();

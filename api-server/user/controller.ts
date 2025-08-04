@@ -98,8 +98,13 @@ export const subDomainExists = async (req: Request, res: Response) => {
                 subDomain: subdomain
             }
         });
+        const publicDeployment = await db.publicDeployments.findFirst({
+            where: {
+                subdomain
+            }
+        })
 
-        if (project) {
+        if (project || publicDeployment) {
             throw ("");
         }
         return res.status(200).json({ message: "Subdomain available!" });
@@ -155,7 +160,7 @@ export const publicDeployment = async (req: Request, res: Response) => {
     try {
         const data = PublicDeploymentScheema.parse(req.body);
         const envs: Record<string, string>[] = [];
-
+        
         data.env.trim().split("\n").forEach(e => {
             const s = e.split("=", 2);
             if (s[0] != "" && s[1]) {

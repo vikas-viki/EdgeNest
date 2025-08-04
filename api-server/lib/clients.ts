@@ -70,4 +70,3 @@ export const redisClient = new Redis({
     host: REDIS_HOST,
     port: 15043
 });
-redisClient.connect();
