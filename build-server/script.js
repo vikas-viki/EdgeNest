@@ -62,16 +62,16 @@ async function publishLog(log) {
         log: text,
     });
     try {
-        // await kafkaProducer.send({
-        //   topic: `edgenest-projectbulid-logs`,
-        //   messages: [
-        //     {
-        //       key: `log---${deploymentID}---${key++}---${projectID === deploymentID ? "YES" : "NO"}`,
-        //       value: text
-        //     }
-        //   ]
-        // });
-        console.log(text);
+        await kafkaProducer.send({
+          topic: `edgenest-projectbulid-logs`,
+          messages: [
+            {
+              key: `log---${deploymentID}---${key++}---${projectID === deploymentID ? "YES" : "NO"}`,
+              value: text,
+              partition: 0
+            }
+          ]
+        });
     } catch (e) {
         console.error("kafka error: ", e);
     }

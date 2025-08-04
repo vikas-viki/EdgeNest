@@ -96,14 +96,7 @@ const ProjectDeployment = ({ params }: { params: Promise<{ projectId: string }> 
                 <div className='flex w-full flex-col gap-4'>
                     <div className="flex justify-between w-full">
                         <span className='text-lg font-medium select-none'>Deployments</span>
-                        <button
-                            onClick={async () => {
-                                setLoading1(true);
-                                await getProjectDeployments(project.projectId);
-                                setLoading1(false);
-                            }}
-                            className='cursor-pointer p-1 rounded-sm transition-all duration-300 hover:bg-gray-300 bg-gray-200'><RotateCcw size={20} /></button>
-                    </div>
+                        </div>
 
                     <div className='w-full flex flex-col gap-4'>
                         {
