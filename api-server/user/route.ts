@@ -13,17 +13,16 @@ const limit = rateLimit({
 })
 const limit2 = rateLimit({
     windowMs: 24 * 60 * 60 * 1000,
-    max: 50,
+    max: 30,
     standardHeaders: true,
     legacyHeaders: true,
     message: { message: "Only 50 deployments per day, Good day!" }
 })
-
 userRouter.get("/", authorizeUser, getData);
 
 userRouter.post("/project", limit, limit2, authorizeUser, newProject);
 
-userRouter.post("/new-deployment", limit, limit2, authorizeUser, deployAgain);
+userRouter.post("/new-deployment", limit, limit2,authorizeUser, deployAgain);
 
 userRouter.post("/subdomain-exists", authorizeUser, subDomainExists);
 

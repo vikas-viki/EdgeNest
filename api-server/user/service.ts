@@ -2,14 +2,14 @@ import { RunTaskCommand } from "@aws-sdk/client-ecs";
 import { UserDataResponse } from "../lib/types";
 import { project, user } from "../prisma-client";
 import { NewDeploymentData, NewProjectData, PublicDeploymentData } from "./scheema";
-import { clickhouseClient, db, ecsClient, s3Client } from "../lib/clients";
+import { clickhouseClient, db, ecsClient, redisClient, s3Client } from "../lib/clients";
 import { generateSlug } from "random-word-slugs";
 import {
     ListObjectsV2Command,
     CopyObjectCommand,
     DeleteObjectsCommand
 } from "@aws-sdk/client-s3";
-import { S3_BUCKET } from "../lib/constants";
+import { MAX_ECS_TASKS, S3_BUCKET } from "../lib/constants";
 
 export class UserService {
     static config = {
@@ -19,7 +19,14 @@ export class UserService {
         securityGroups: ["sg-0022fbb54b8684052"]
     };
 
-    static async newTask(data: { projectId: string, subdomain: string, gitUrl: string, outputFolder: string, repoBranch: string, deploymentId: string, envs: Record<string, string>[] }) {
+    static async newTask(data: { projectId: string, subdomain: string, gitUrl: string, outputFolder: string, repoBranch: string, deploymentId: string, envs: Record<string, string>[] }): Promise<boolean> {
+        const count = await redisClient.incr("ECS_TASKS_COUNT");
+        if (count == 1) {
+            await redisClient.expire("ECS_TASKS_COUNT", 24 * 60 * 60);
+        }
+        if (count > MAX_ECS_TASKS) {
+            return false;
+        }
         const cmd = new RunTaskCommand({
             cluster: this.config.CLUSTER,
             taskDefinition: this.config.TASK,
@@ -89,6 +96,7 @@ export class UserService {
         });
 
         await ecsClient.send(cmd);
+        return true;
     }
 
     static async deleteOldFolders(data: { oldDomain: string }): Promise<void> {

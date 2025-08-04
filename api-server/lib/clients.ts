@@ -7,18 +7,24 @@ import { PrismaClient } from '../prisma-client';
 import { createServer } from "http";
 import express from 'express';
 import dotenv from "dotenv";
+import Redis from 'ioredis';
 
-dotenv.config({path: process.env.NODE_ENV == "production" ? ".env.production" : ".env.local"});
+dotenv.config({ path: process.env.NODE_ENV == "production" ? ".env.production" : ".env.local" });
 
 const KAFKA_SERVICE_URL = process.env.KAFKA_SERVICE_URL?.toString();
 const KAFKA_USERNAME = process.env.KAFKA_USERNAME?.toString();
 const KAFKA_PASSWORD = process.env.KAFKA_PASSWORD?.toString();
 const IAM_ACCESS_KEY = process.env.IAM_ACCESS_KEY?.toString();
 const IAM_SECRET_KEY = process.env.IAM_SECRET_KEY?.toString();
+const REDIS_HOST = process.env.REDIS_HOST?.toString();
+const REDIS_PASSWORD = process.env.REDIS_PASSWORD?.toString();
 
 if (!KAFKA_SERVICE_URL || !KAFKA_USERNAME || !KAFKA_PASSWORD) throw ("Env not found!");
 if (!IAM_ACCESS_KEY || !IAM_SECRET_KEY) {
     throw new Error("Missing AWS credentials in environment variables");
+}
+if (!REDIS_HOST || !REDIS_PASSWORD) {
+    throw new Error("Missing Redis credentials in environment variables");
 }
 
 export const app = express();
@@ -58,3 +64,10 @@ export const s3Client = new S3Client({
         secretAccessKey: IAM_SECRET_KEY
     }
 });
+export const redisClient = new Redis({
+    username: "default",
+    password: REDIS_PASSWORD,
+    host: REDIS_HOST,
+    port: 15043
+});
+redisClient.connect();
