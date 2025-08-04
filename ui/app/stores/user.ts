@@ -45,18 +45,15 @@ export const userStore = createStore<UserStoreData>()((set, get) => ({
         set({ selectedProject: project });
     },
     getUserData: async () => {
-        const { authenticated } = authStore.getState();
-        if (authenticated) {
-            try {
-                const response = await api.get("/user");
-                const data = response.data.user as UserData;
-                set({ userData: data });
-            } catch (e) {
-                if (isAxiosError(e)) {
-                    toast.error(e.response?.data.message || e.message);
-                } else {
-                    toast.error("Error getting user details!");
-                }
+        try {
+            const response = await api.get("/user");
+            const data = response.data.user as UserData;
+            set({ userData: data });
+        } catch (e) {
+            if (isAxiosError(e)) {
+                toast.error(e.response?.data.message || e.message);
+            } else {
+                toast.error("Error getting user details!");
             }
         }
     },
@@ -83,7 +80,6 @@ export const userStore = createStore<UserStoreData>()((set, get) => ({
         set({ loading: true });
         try {
             await api.post("/user/project", { ...data });
-            window.location.href = "/dashboard";
         } catch (e) {
             if (isAxiosError(e)) {
                 toast.error(e.response?.data.message || e.message);
@@ -96,8 +92,10 @@ export const userStore = createStore<UserStoreData>()((set, get) => ({
     newDeployment: async (data) => {
         set({ loading: true });
         try {
-            await api.post("/user/new-deployment", { ...data });
-            window.location.href = "/dashboard";
+            const res = await api.post("/user/new-deployment", { ...data });
+            if (res.status == 200) {
+                toast.success("Deployment Started");
+            }
         } catch (e) {
             if (isAxiosError(e)) {
                 toast.error(e.response?.data.message || e.message);

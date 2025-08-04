@@ -7,19 +7,19 @@ import { getLiveLink } from '@/app/lib/helpers';
 import { NewDeploymentData } from '@/app/lib/types';
 import { authStore } from '@/app/stores/auth';
 import { userStore } from '@/app/stores/user';
-import { Loader2, Settings } from 'lucide-react';
+import { Loader2, RotateCcw, Settings } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { use, useEffect, useState } from 'react'
-import toast from 'react-hot-toast';
+import React, { use, useEffect, useState } from 'react';
 import { useStore } from 'zustand';
 
 const ProjectDeployment = ({ params }: { params: Promise<{ projectId: string }> }) => {
     const project = use(params);
     const router = useRouter();
     const { authenticated } = useStore(authStore);
-    const { selectedProject, getProjectDeployments, newDeployment, deployments, userData, setSelectedProject, getUserData } = useStore(userStore);
-    const [loading, setLoading] = useState(false);
+    const deployments = useStore(userStore, (state) => state.deployments);
+    const { selectedProject, getProjectDeployments, newDeployment, loading, userData, setSelectedProject, getUserData } = useStore(userStore);
+    const [loading1, setLoading1] = useState(false);
 
     useEffect(() => {
         if (!deployments[project.projectId]) {
@@ -29,10 +29,6 @@ const ProjectDeployment = ({ params }: { params: Promise<{ projectId: string }> 
 
     const deployAgain = async () => {
         if (!selectedProject || loading) return;
-        setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
-        }, 2000);
         const data: NewDeploymentData = {
             changes: false,
             id: selectedProject.id,
@@ -43,7 +39,6 @@ const ProjectDeployment = ({ params }: { params: Promise<{ projectId: string }> 
             env: selectedProject.env || "",
             outputFolder: selectedProject.outputFolder,
         }
-        toast.success("Deployment Started");
         await newDeployment(data);
         await getProjectDeployments(project.projectId);
     }
@@ -99,15 +94,29 @@ const ProjectDeployment = ({ params }: { params: Promise<{ projectId: string }> 
                     </div>
                 </div>
                 <div className='flex w-full flex-col gap-4'>
-                    <span className='text-lg font-medium select-none'>Deployments</span>
+                    <div className="flex justify-between w-full">
+                        <span className='text-lg font-medium select-none'>Deployments</span>
+                        <button
+                            onClick={async () => {
+                                setLoading1(true);
+                                await getProjectDeployments(project.projectId);
+                                setLoading1(false);
+                            }}
+                            className='cursor-pointer p-1 rounded-sm transition-all duration-300 hover:bg-gray-300 bg-gray-200'><RotateCcw size={20} /></button>
+                    </div>
 
                     <div className='w-full flex flex-col gap-4'>
                         {
-                            deployments[project.projectId] && (
-                                deployments[project.projectId].map((d, i) => (
-                                    <Deployment deploymentId={d.id} time={d.time} key={i} projectId={project.projectId} />
-                                ))
-                            )
+                            loading1 ?
+                                <div className='w-full h-max flex justify-center items-center'>
+                                    <Loader2 className='animate-spin' />
+                                </div>
+                                :
+                                deployments[project.projectId] && (
+                                    deployments[project.projectId].map((d, i) => (
+                                        <Deployment deploymentId={d.id} time={d.time} key={i} projectId={project.projectId} />
+                                    ))
+                                )
                         }
                     </div>
                 </div>

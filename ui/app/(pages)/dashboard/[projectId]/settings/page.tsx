@@ -6,13 +6,14 @@ import { NewDeploymentData } from '@/app/lib/types';
 import { userStore } from '@/app/stores/user'
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react'
 import { useStore } from 'zustand';
 
 const ProjectSettings = () => {
     const { newDeployment, loading, subDomainExists, subdomainValid, selectedProject, setSubdomainValid } = useStore(userStore);
     const [subDomain, setSubDomain] = useState(selectedProject?.subDomain || "");
-
+    const router = useRouter();
     const timer = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
@@ -48,6 +49,7 @@ const ProjectSettings = () => {
         };
 
         await newDeployment(data);
+        router.push(`/dashboard/${selectedProject.id}`);
     }
 
     useEffect(() => {

@@ -7,7 +7,7 @@ import { userStore } from "./user";
 export type AuthStore = {
     authenticated: boolean,
     loading: boolean,
-    isLoggedIn: () => Promise<void>;
+    isLoggedIn: () => Promise<boolean>;
     authenticateUser: (code: string, installation_id?: string) => Promise<{ installed: boolean, success: boolean }>;
 }
 
@@ -46,11 +46,11 @@ export const authStore = createStore<AuthStore>()((set, get) => ({
             await api.get(`/auth/session`);
             set({ authenticated: true });
             connectToWs();
+            return true;
         } catch (e) {
             if (isAxiosError(e)) {
-                toast.error("Please signin using Github to continue!");
                 if (!window.location.href.includes("/auth") && window.location.href.includes("/dashboard")) {
-                    window.location.href = "/auth"
+                    window.location.href = "/auth";
                 }
                 console.log(e.response?.data);
             } else {
@@ -58,5 +58,6 @@ export const authStore = createStore<AuthStore>()((set, get) => ({
             }
         }
         set({ loading: false });
+        return false;
     }
 }));

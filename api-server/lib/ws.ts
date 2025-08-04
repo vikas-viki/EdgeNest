@@ -66,7 +66,7 @@ export async function initKafkaSubscribe() {
                 if (message.value.toString() == "DEPLOYMENT_DONE") {
                     await UserService.deploymentComplete(deploymentId);
                 } else {
-                    console.log(isPublic, "log::", message.value.toString());
+                    // console.log(isPublic, "log::", message.value.toString());
                     if (!deploymentLogsBuffer[deploymentId]) {
                         deploymentLogsBuffer[deploymentId] = [];
                         setTimeout(() => {

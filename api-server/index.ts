@@ -14,12 +14,11 @@ const PORT = process.env.PORT || 3001;
 const limiter = rateLimit({
     windowMs: 5 * 60 * 1000,
     max: 100,
-    keyGenerator: (req) => req.user?.id || req.ip || "unknown-client",
     standardHeaders: true,
     legacyHeaders: true,
-    message: "Rate limit exceeded!"
+    message: {message: "Rate limit exceeded!"}
 })
-app.set('trust proxy', true);
+app.set('trust proxy', process.env.NODE_ENV == "production"? "loopback": false);
 app.use(cors({
     origin: process.env.FRONTEND_URL,
     credentials: true

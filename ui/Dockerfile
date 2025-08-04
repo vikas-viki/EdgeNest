@@ -10,7 +10,7 @@ RUN npm install -g pnpm
 COPY . .
 RUN pnpm install
 
-ENV NEXT_PUBLIC_SERVER_URL='https://edgenest.0xbuilder.in/api'
+ENV NEXT_PUBLIC_SERVER_URL='https://edgenest.0xbuilder.in'
 ENV NEXT_PUBLIC_PROXY_SERVER='.edgenest.0xbuilder.in'
 
 RUN pnpm build

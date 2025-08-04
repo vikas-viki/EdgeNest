@@ -2,7 +2,6 @@
 import Loader from '@/app/components/Loader';
 import Logo from '@/app/components/Logo'
 import ProjectCard from '@/app/components/ProjectCard'
-import { authStore } from '@/app/stores/auth';
 import { userStore } from '@/app/stores/user';
 import { Plus } from 'lucide-react'
 import Image from 'next/image'
@@ -11,14 +10,13 @@ import React, { useEffect } from 'react'
 import { useStore } from 'zustand';
 
 const Dashboard = () => {
-    const { authenticated } = useStore(authStore);
     const { getUserData, userData } = useStore(userStore);
 
     useEffect(() => {
         getUserData();
-    }, [authenticated]);
+    }, []);
 
-    if (!authenticated || !userData) return <Loader />;
+    if (!userData) return <Loader />;
 
     return (
         <div className='flex flex-col justify-start items-start w-screen h-full px-20 py-10 rocoleta'>
