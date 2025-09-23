@@ -14,3 +14,5 @@
 - once build completes, user can visit to the URL 
   - the URL is a sub-domain of the proxy server (GET /).
   - it proxies the requests to S3 as user directly and serves the html file.
+
+![alt text](image.png)

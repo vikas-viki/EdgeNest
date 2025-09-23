@@ -16,9 +16,9 @@ const limiter = rateLimit({
     max: 100,
     standardHeaders: true,
     legacyHeaders: true,
-    message: {message: "Rate limit exceeded!"}
+    message: { message: "Rate limit exceeded!" }
 })
-app.set('trust proxy', process.env.NODE_ENV == "production"? "loopback": false);
+app.set('trust proxy', process.env.NODE_ENV == "production" ? "loopback" : false);
 app.use(cors({
     origin: process.env.FRONTEND_URL,
     credentials: true
