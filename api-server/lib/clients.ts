@@ -68,5 +68,5 @@ export const redisClient = new Redis({
     username: "default",
     // password: REDIS_PASSWORD, // switched to local redis in ec2 hence removed password
     host: REDIS_HOST,
-    port: 6379
+    port: 6380
 });
