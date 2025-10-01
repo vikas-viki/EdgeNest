@@ -97,7 +97,9 @@ jobs:
                   IMAGE_NAME=${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY_AS }}:latest
                   aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
                   docker pull $IMAGE_NAME
-                  docker stop api-server || true
-                  docker rm api-server || true
+                  docker stop api-server_server_1 || true
+                  docker rm api-server_server_1 || true
+                  docker stop api-server_redis_1 || true
+                  docker rm api-server_redis_1 || true
                   cd ~/api-server && gpg --batch --passphrase ${{secrets.GPG_SECRET}} --output '.env' --decrypt 'api-server-env.gpg' && docker-compose up -d
                   docker system prune -f
